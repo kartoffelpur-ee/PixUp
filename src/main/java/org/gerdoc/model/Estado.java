@@ -12,6 +12,4 @@ public class Estado
         this.id = id;
         this.nombre = nombre;
     }
-
-
 }

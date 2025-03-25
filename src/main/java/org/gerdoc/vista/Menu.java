@@ -26,4 +26,24 @@ public class Menu {
     {
         System.out.print("> Dame una opción: ");
     }
+
+    public static void errorDato( )
+    {
+        System.out.println("\t¡ERROR!¡Ese no es un dato válido!");
+    }
+
+    public static void catalogo() {
+        System.out.println("1. Estados");
+        System.out.println("2. Municipios");
+        System.out.println("3. Colonias");
+        System.out.println("4. Volver");
+    }
+
+    public static void registro() {
+        System.out.println("1. Altas");
+        System.out.println("2. Bajas");
+        System.out.println("3. Ver");
+        System.out.println("4. Actualizar");
+        System.out.println("5. Volver");
+    }
 }
