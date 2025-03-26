@@ -1,8 +1,7 @@
 package org.gerdoc.vista;
-
 import org.gerdoc.util.ReadUtil;
 
-public class Consola implements Ejecutable{
+public class Consola implements Ejecutable {
     private static Consola consola;
 
     public Consola() {
@@ -19,27 +18,21 @@ public class Consola implements Ejecutable{
     @Override
     public void run() {
         boolean flag = true;
-        int opcion;
+        int opcion, subOpcion;
 
         while( flag ){
-            Menu.principal( );
+            Menu.menuPrincipal( );
             Menu.seleccionaOpcion( );
             opcion = ReadUtil.readInt( );
 
             switch (opcion) {
-                case 1:
-                    Menu.catalogo();
-                    Menu.seleccionaOpcion();
-                    break;
-                case 2:
-                    System.out.println("!! EN CONSTRUCCIÓN !!");
-                    break;
-                case 3:
+                case 1 -> Catálogo.menuCatalogo();
+                case 2 -> System.out.println("Opción no implementada aún - En desarrollo.");
+                case 3 -> {
+                    System.out.println("Saliendo de la aplicación...");
                     flag = false;
-                    break;
-                default:
-                    Menu.opcionInvalida();
-                    break;
+                }
+                default -> Menu.opcionInvalida();
             }
         }
     }

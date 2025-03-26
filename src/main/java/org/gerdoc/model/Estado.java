@@ -1,15 +1,12 @@
 package org.gerdoc.model;
 
-public class Estado
+public class Estado extends Entidad
 {
-    private Integer id;
-    private String nombre;
-
     public Estado() {
     }
 
-    public Estado(Integer id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
+    public Estado(Integer id, String nombre)
+    {
+        super(id, nombre);
     }
 }

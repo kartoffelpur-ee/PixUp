@@ -35,7 +35,7 @@ public class ReadUtil {
             if (valor != null && !valor.isEmpty()) {
                 try {
                     aux = Integer.valueOf(valor);
-                    if (aux >= 0) { // Esto valida que los valores que se ingresan sean solo valores positivos :)
+                    if (aux >= 0) {
                         return aux;
                     } else {
                         System.out.println("\t¡ERROR! Ingresa un número entero positivo.");

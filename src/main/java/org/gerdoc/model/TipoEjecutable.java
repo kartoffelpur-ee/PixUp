@@ -20,7 +20,8 @@ public enum TipoEjecutable {
         return id;
     }
 
-    public static TipoEjecutable getTipoEjecutableById(int opcion) {
+    public static TipoEjecutable getTipoEjecutableById(int opcion)
+    {
         return switch (opcion)
         {
             case 1 -> CONSOLA;

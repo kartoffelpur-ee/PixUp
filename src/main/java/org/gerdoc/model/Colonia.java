@@ -1,51 +1,43 @@
 package org.gerdoc.model;
 
-public class Colonia
+public class Colonia extends Entidad
 {
-    private Integer id;
-    private String nombre;
     private String cp;
     private Municipio municipio;
 
     public Colonia() {
     }
 
-    public Colonia(Integer id, String nombre, String cp, Municipio municipio) {
-        this.id = id;
-        this.nombre = nombre;
+    public Colonia(Integer id, String nombre, String cp, Municipio municipio)
+    {
+        super(id, nombre);
         this.cp = cp;
         this.municipio = municipio;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getCp() {
+    public String getCp()
+    {
         return cp;
     }
 
-    public void setCp(String cp) {
+    public void setCp(String cp)
+    {
         this.cp = cp;
     }
 
-    public Municipio getMunicipio() {
+    public Municipio getMunicipio()
+    {
         return municipio;
     }
 
-    public void setMunicipio(Municipio municipio) {
+    public void setMunicipio(Municipio municipio)
+    {
         this.municipio = municipio;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ID: "+getId()+"\nNombre: "+getNombre()+"\nCódigo postal: "+cp+"\nMunicipio: "+municipio.getNombre();
     }
 }

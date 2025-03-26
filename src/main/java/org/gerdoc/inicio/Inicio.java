@@ -6,7 +6,6 @@ import org.gerdoc.vista.Ejecutable;
 import org.gerdoc.vista.Menu;
 
 public class Inicio {
-
     public static void main(String[] args){
         boolean flag = true;
         int opcion = 0;
