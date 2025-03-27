@@ -10,3 +10,4 @@ public class Estado extends Entidad
         super(id, nombre);
     }
 }
+

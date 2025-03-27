@@ -27,3 +27,4 @@ public class Municipio extends Entidad
         return "ID: "+ getId() +"\nNombre: "+ getNombre() +"\nEstado: "+ estado.getNombre();
     }
 }
+

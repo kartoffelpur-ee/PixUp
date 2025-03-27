@@ -34,7 +34,8 @@ public class Menu {
         System.out.println("\t¡ERROR!¡Ese no es un dato válido!");
     }
 
-    public static void menuCatalogo( ) {
+    public static void menuCatalogo( )
+    {
         System.out.println("\n\t:: Catálogo ::");
         System.out.println("1. Estados");
         System.out.println("2. Municipios");
@@ -87,3 +88,4 @@ public class Menu {
         System.out.println("> El ID ingresado no existe.");
     }
 }
+

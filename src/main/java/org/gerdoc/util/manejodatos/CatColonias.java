@@ -1,23 +1,20 @@
 package org.gerdoc.util.manejodatos;
-
 import org.gerdoc.model.Colonia;
 import org.gerdoc.model.Municipio;
 import org.gerdoc.util.Gestor;
 import org.gerdoc.util.ReadUtil;
 import org.gerdoc.vista.Menu;
-
 import java.util.HashMap;
 import java.util.Map;
 
-public class GestorColonias implements Gestor
+public class CatColonias implements Gestor
 {
     private Map<Integer, Colonia> colonias = new HashMap<>();
-    private GestorMunicipios gestorMunicipios;
+    private CatMunicipios catMunicipios;
 
-    public GestorColonias(GestorMunicipios gestorMunicipios) {
-        this.gestorMunicipios = gestorMunicipios;
+    public CatColonias(CatMunicipios catMunicipios) {
+        this.catMunicipios = catMunicipios;
     }
-
 
     @Override
     public void alta() {
@@ -30,31 +27,19 @@ public class GestorColonias implements Gestor
         Menu.leeIdMunicipio();
         Integer municipioId = ReadUtil.readInt();
 
-        Municipio municipio = gestorMunicipios.validarMunicipio( municipioId );
+        Municipio municipio = catMunicipios.validarMunicipio( municipioId );
         if( municipio == null){
             System.out.println("> Municipio no encontrado.");
         }
         else{
             if(colonias.containsKey(id)){
-                System.out.println("> Ya existe una colonia asociada a dicha ID. Colonia NO agregado.");
+                System.out.println("> Ya existe una colonia asociada a dicha ID. Colonia NO agregada.");
             }
             else{
                 Colonia colonia = new Colonia(id, nombre, cp, municipio);
                 colonias.put(id, colonia);
-                System.out.println("> Colonia agregado exitosamente.");
+                System.out.println("> Colonia agregada exitosamente.");
                 System.out.println(colonia);
-            }
-        }
-    }
-
-    @Override
-    public void consulta() {
-        if (colonias.isEmpty()) {
-            System.out.println("> No hay colonias registrados.");
-        } else {
-            System.out.println("\n\t:: Lista de colonias registrados ::");
-            for (Colonia e: colonias.values()){
-                System.out.println(e);
             }
         }
     }
@@ -70,6 +55,18 @@ public class GestorColonias implements Gestor
         }
         else
             Menu.idInvalido();
+    }
+
+    @Override
+    public void consulta() {
+        if (colonias.isEmpty()) {
+            System.out.println("> No hay colonias registradas.");
+        } else {
+            System.out.println("\n\t:: Lista de colonias registradas ::");
+            for (Colonia e: colonias.values()){
+                System.out.println(e);
+            }
+        }
     }
 
     @Override
@@ -89,5 +86,5 @@ public class GestorColonias implements Gestor
         else
             Menu.idInvalido();
     }
-
 }
+

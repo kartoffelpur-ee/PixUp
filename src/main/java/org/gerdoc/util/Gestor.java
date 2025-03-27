@@ -2,8 +2,8 @@ package org.gerdoc.util;
 
 import org.gerdoc.vista.Menu;
 
-public interface Gestor {
-
+public interface Gestor
+{
     default void menu(){
         int opcion;
 
@@ -19,10 +19,9 @@ public interface Gestor {
             default -> Menu.opcionInvalida();
         }
     };
-
     void alta();
     void baja();
     void consulta();
     void actualizar();
-
 }
+

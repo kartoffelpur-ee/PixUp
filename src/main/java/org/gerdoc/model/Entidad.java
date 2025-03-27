@@ -40,3 +40,4 @@ public abstract class Entidad
         return "ID: "+id+"\nNombre: "+nombre;
     }
 }
+

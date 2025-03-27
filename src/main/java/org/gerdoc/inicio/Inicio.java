@@ -21,6 +21,7 @@ public class Inicio {
 
             if( TipoEjecutable.SALIR.equals( tipoEjecutable ) )
             {
+                System.out.println("Saliendo de la aplicación..."); 
                 flag = false;
             }
             if( TipoEjecutable.OPCION_ERRONEA.equals( tipoEjecutable ) )
@@ -35,3 +36,4 @@ public class Inicio {
         }
     }
 }
+

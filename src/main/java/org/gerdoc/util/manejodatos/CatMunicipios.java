@@ -1,21 +1,19 @@
 package org.gerdoc.util.manejodatos;
-
 import org.gerdoc.model.Estado;
 import org.gerdoc.model.Municipio;
 import org.gerdoc.util.Gestor;
 import org.gerdoc.util.ReadUtil;
 import org.gerdoc.vista.Menu;
-
 import java.util.HashMap;
 import java.util.Map;
 
-public class GestorMunicipios implements Gestor
+public class CatMunicipios implements Gestor
 {
     private Map<Integer, Municipio> municipios = new HashMap<>();
-    private GestorEstados gestorEstados;
+    private CatEstados catEstados;
 
-    public GestorMunicipios(GestorEstados gestorEstados) {
-        this.gestorEstados = gestorEstados;
+    public CatMunicipios(CatEstados catEstados) {
+        this.catEstados = catEstados;
     }
 
     @Override
@@ -27,8 +25,7 @@ public class GestorMunicipios implements Gestor
         Menu.leeIdEstado();
         Integer estadoId = ReadUtil.readInt();
 
-
-        Estado estado = gestorEstados.validarEstado( estadoId );
+        Estado estado = catEstados.validarEstado( estadoId );
         if( estado == null){
             System.out.println("> Estado no encontrado.");
         }
@@ -41,18 +38,6 @@ public class GestorMunicipios implements Gestor
                 municipios.put(id, municipio);
                 System.out.println("> Municipio agregado exitosamente.");
                 System.out.println(municipio);
-            }
-        }
-    }
-
-    @Override
-    public void consulta() {
-        if (municipios.isEmpty()) {
-            System.out.println("> No hay estados registrados.");
-        } else {
-            System.out.println("\n\t:: Lista de estados registrados ::");
-            for (Municipio e: municipios.values()){
-                System.out.println(e);
             }
         }
     }
@@ -71,14 +56,26 @@ public class GestorMunicipios implements Gestor
     }
 
     @Override
+    public void consulta() {
+        if (municipios.isEmpty()) {
+            System.out.println("> No hay estados registrados.");
+        } else {
+            System.out.println("\n\t:: Lista de estados registrados ::");
+            for (Municipio e: municipios.values()){
+                System.out.println(e);
+            }
+        }
+    }
+
+    @Override
     public void actualizar() {
         Menu.leeId();
         int id = ReadUtil.readInt();
         if (municipios.containsKey(id)){
             Menu.leeNombre2();
             String nuevoNombre = ReadUtil.read();
-
             municipios.get(id).setNombre(nuevoNombre);
+
             System.out.println("> Municipio actualizado exitosamente.");
         }
         else
@@ -89,3 +86,4 @@ public class GestorMunicipios implements Gestor
         return municipios.get(id);
     }
 }
+

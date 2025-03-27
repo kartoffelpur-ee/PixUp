@@ -1,14 +1,12 @@
 package org.gerdoc.util.manejodatos;
-
 import org.gerdoc.model.Estado;
 import org.gerdoc.util.Gestor;
 import org.gerdoc.util.ReadUtil;
 import org.gerdoc.vista.Menu;
-
 import java.util.HashMap;
 import java.util.Map;
 
-public class GestorEstados implements Gestor
+public class CatEstados implements Gestor
 {
     private Map<Integer, Estado> estados = new HashMap<>();
 
@@ -31,18 +29,6 @@ public class GestorEstados implements Gestor
     }
 
     @Override
-    public void consulta() {
-        if (estados.isEmpty()) {
-            System.out.println("> No hay estados registrados.");
-        } else {
-            System.out.println("\n\t:: Lista de estados registrados ::");
-            for (Estado e: estados.values()){
-                System.out.println(e);
-            }
-        }
-    }
-
-    @Override
     public void baja() {
         Menu.leeId();
         int id = ReadUtil.readInt();
@@ -53,6 +39,18 @@ public class GestorEstados implements Gestor
         }
         else
             Menu.idInvalido();
+    }
+
+    @Override
+    public void consulta() {
+        if (estados.isEmpty()) {
+            System.out.println("> No hay estados registrados.");
+        } else {
+            System.out.println("\n\t:: Lista de estados registrados ::");
+            for (Estado e: estados.values()){
+                System.out.println(e);
+            }
+        }
     }
 
     @Override
@@ -74,3 +72,5 @@ public class GestorEstados implements Gestor
         return estados.get(id);
     }
 }
+
+

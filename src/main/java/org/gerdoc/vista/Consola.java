@@ -28,12 +28,10 @@ public class Consola implements Ejecutable {
             switch (opcion) {
                 case 1 -> Catálogo.menuCatalogo();
                 case 2 -> System.out.println("Opción no implementada aún - En desarrollo.");
-                case 3 -> {
-                    System.out.println("Saliendo de la aplicación...");
-                    flag = false;
-                }
+                case 3 -> flag = false;
                 default -> Menu.opcionInvalida();
             }
         }
     }
 }
+

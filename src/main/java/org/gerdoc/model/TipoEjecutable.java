@@ -11,7 +11,8 @@ public enum TipoEjecutable {
     private Integer id;
     private Ejecutable ejecutable;
 
-    TipoEjecutable(Integer id, Ejecutable ejecutable) {
+    TipoEjecutable(Integer id, Ejecutable ejecutable)
+    {
         this.id = id;
         this.ejecutable = ejecutable;
     }

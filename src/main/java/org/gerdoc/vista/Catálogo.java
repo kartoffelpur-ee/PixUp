@@ -1,9 +1,9 @@
 package org.gerdoc.vista;
 
 import org.gerdoc.util.ReadUtil;
-import org.gerdoc.util.manejodatos.GestorColonias;
-import org.gerdoc.util.manejodatos.GestorEstados;
-import org.gerdoc.util.manejodatos.GestorMunicipios;
+import org.gerdoc.util.manejodatos.CatColonias;
+import org.gerdoc.util.manejodatos.CatEstados;
+import org.gerdoc.util.manejodatos.CatMunicipios;
 
 public class Catálogo {
 
@@ -11,9 +11,9 @@ public class Catálogo {
         boolean flag = true;
         int opcion;
 
-        GestorEstados gestorEstados = new GestorEstados();
-        GestorMunicipios gestorMunicipios = new GestorMunicipios(gestorEstados);
-        GestorColonias gestorColonias = new GestorColonias(gestorMunicipios);
+        CatEstados catEstados = new CatEstados();
+        CatMunicipios catMunicipios = new CatMunicipios(catEstados);
+        CatColonias catColonias = new CatColonias(catMunicipios);
 
         while( flag ){
             Menu.menuCatalogo( );
@@ -21,12 +21,13 @@ public class Catálogo {
             opcion = ReadUtil.readInt( );
 
             switch (opcion) {
-                case 1 -> gestorEstados. menu();
-                case 2 -> gestorMunicipios.menu();
-                case 3 -> gestorColonias.menu();
+                case 1 -> catEstados. menu();
+                case 2 -> catMunicipios.menu();
+                case 3 -> catColonias.menu();
                 case 4 -> flag = false;
                 default -> Menu.opcionInvalida();
             }
         }
     }
 }
+
