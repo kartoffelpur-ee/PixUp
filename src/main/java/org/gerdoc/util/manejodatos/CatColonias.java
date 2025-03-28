@@ -1,5 +1,6 @@
 package org.gerdoc.util.manejodatos;
 import org.gerdoc.model.Colonia;
+import org.gerdoc.model.Estado;
 import org.gerdoc.model.Municipio;
 import org.gerdoc.util.Gestor;
 import org.gerdoc.util.ReadUtil;
@@ -81,7 +82,19 @@ public class CatColonias implements Gestor
 
             colonias.get(id).setNombre(nuevoNombre);
             colonias.get(id).setCp(nuevoCp);
-            System.out.println("> Colonia actualizada exitosamente.");
+
+            Menu.leeIdMunicipio();
+            Integer idMunicipio = ReadUtil.readInt();
+
+            Municipio municipio = catMunicipios.validarMunicipio( idMunicipio );
+            if( municipio == null){
+                System.out.println("> Municipio no encontrado.");
+                System.out.println("> Nombre de la colonia actualizada exitosamente.");
+            }
+            else{
+                colonias.get(id).setMunicipio( municipio );
+                System.out.println("> Colonia actualizada en su totalidad exitosamente.");
+            }
         }
         else
             Menu.idInvalido();

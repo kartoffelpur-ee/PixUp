@@ -76,7 +76,18 @@ public class CatMunicipios implements Gestor
             String nuevoNombre = ReadUtil.read();
             municipios.get(id).setNombre(nuevoNombre);
 
-            System.out.println("> Municipio actualizado exitosamente.");
+            Menu.leeIdEstado();
+            Integer idEstado = ReadUtil.readInt();
+
+            Estado estado = catEstados.validarEstado( idEstado );
+            if( estado == null){
+                System.out.println("> Estado no encontrado.");
+                System.out.println("> Nombre del municipio actualizado exitosamente.");
+            }
+            else{
+                municipios.get(id).setEstado( estado );
+                System.out.println("> Municipio actualizado en su totalidad exitosamente.");
+            }
         }
         else
             Menu.idInvalido();

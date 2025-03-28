@@ -16,6 +16,9 @@ public interface Gestor
             case 2 -> baja();
             case 3 -> consulta();
             case 4 -> actualizar();
+            case 5 -> {
+                break;
+            }
             default -> Menu.opcionInvalida();
         }
     };
