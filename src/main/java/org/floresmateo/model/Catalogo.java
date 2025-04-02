@@ -1,17 +1,14 @@
-package org.gerdoc.model;
+package org.floresmateo.model;
 
-public abstract class Entidad
+import java.io.Serializable;
+
+public abstract class Catalogo implements Serializable
 {
     protected Integer id;
     protected String nombre;
 
-    public Entidad() {
-    }
-
-    public Entidad(Integer id, String nombre)
+    public Catalogo()
     {
-        this.id = id;
-        this.nombre = nombre;
     }
 
     public Integer getId()
@@ -22,22 +19,23 @@ public abstract class Entidad
     public void setId(Integer id)
     {
         this.id = id;
+        this.nombre = nombre;
     }
 
-    public String getNombre()
-    {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre)
-    {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     @Override
     public String toString()
     {
-        return "ID: "+id+"\nNombre: "+nombre;
+        return "Catalogo{" +
+                "id=" + id +
+                '}';
     }
 }
 

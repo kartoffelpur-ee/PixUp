@@ -1,6 +1,6 @@
-package org.gerdoc.util;
+package org.floresmateo.util;
 
-import org.gerdoc.vista.Menu;
+import org.floresmateo.vista.Menu;
 import java.util.Scanner;
 
 public class ReadUtil {
