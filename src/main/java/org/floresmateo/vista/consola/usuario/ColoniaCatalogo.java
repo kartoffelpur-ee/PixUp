@@ -1,14 +1,15 @@
-package org.floresmateo.vista.consola;
+package org.floresmateo.vista.consola.usuario;
 
 import org.floresmateo.model.Colonia;
 import org.floresmateo.model.Municipio;
 import org.floresmateo.util.ReadUtil;
+import org.floresmateo.vista.consola.GestorCatalogos;
 
 import java.io.File;
 
 public class ColoniaCatalogo extends GestorCatalogos<Colonia>
 {
-    public static ColoniaCatalogo coloniaCatalogo;
+    private static ColoniaCatalogo coloniaCatalogo;
     private MunicipioCatalogo municipioCatalogo;
 
     public static ColoniaCatalogo getInstance( )
@@ -52,7 +53,7 @@ public class ColoniaCatalogo extends GestorCatalogos<Colonia>
     @Override
     public void processEditT(Colonia colonia)
     {
-        System.out.println("> ID de la colonia siendo editada: "+colonia.getId());
+        System.out.println("\n> ID de la colonia siendo editada: "+colonia.getId());
         System.out.println("> Colonia siendo editada: "+colonia.getNombre());
         System.out.print("> Ingrese el nuevo nombre de la colonia: ");
         colonia.setNombre( ReadUtil.read() );
@@ -73,7 +74,7 @@ public class ColoniaCatalogo extends GestorCatalogos<Colonia>
 
     @Override
     public File getFile() {
-        return new File("./src/main/resources/Colonias.object" );
+        return new File("./src/main/fileStorage/Colonias.list" );
     }
 }
 

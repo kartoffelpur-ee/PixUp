@@ -3,6 +3,7 @@ package org.floresmateo.vista.consola;
 import org.floresmateo.vista.Ejecutable;
 import org.floresmateo.vista.LeerAcciones;
 import org.floresmateo.vista.Menu;
+import org.floresmateo.vista.consola.*;
 
 public class ListaCatalogos extends LeerAcciones
 {
@@ -22,13 +23,13 @@ public class ListaCatalogos extends LeerAcciones
     @Override
     public void despliegaMenu()
     {
-        System.out.println("\n\t::: Catálogos :::");
-        System.out.println( "1.- Estado");
-        System.out.println( "2.- Municipio");
-        System.out.println( "3.- Colonia");
-        System.out.println( "4.- Salir");
+        System.out.println("\n\t::: Lista de Catálogos Disponibles :::");
+        System.out.println( "1.- Usuarios");
+        System.out.println( "2.- Discos");
+        System.out.println( "3.- Salir");
         Menu.seleccionaOpcion();
     }
+
     @Override
     public int valorMinMenu()
     {
@@ -38,31 +39,32 @@ public class ListaCatalogos extends LeerAcciones
     @Override
     public int valorMaxMenu()
     {
-        return 4;
+        return 3;
     }
 
     @Override
     public void procesaOpcion()
     {
         Ejecutable ejecutable = null;
-        switch (opcion)
+        switch(opcion)
         {
             case 1:
-                ejecutable = EstadoCatalogo.getInstance();
+                ejecutable = ListaUsuario.getInstance();
                 break;
             case 2:
-                ejecutable = MunicipioCatalogo.getInstance();
+                ejecutable = ListaDisco.getInstance();
                 break;
             case 3:
-                ejecutable = ColoniaCatalogo.getInstance();
+                flag = false;
                 break;
-            case 4:
-                flag=false;
             default:
                 Menu.opcionInvalida();
+                break;
         }
-        ejecutable.setFlag( true );
-        ejecutable.run( );
-
+        if(ejecutable!=null)
+        {
+            ejecutable.setFlag(true);
+            ejecutable.run();
+        }
     }
 }

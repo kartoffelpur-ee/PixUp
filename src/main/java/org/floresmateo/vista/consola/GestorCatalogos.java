@@ -43,23 +43,53 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
 
     public void remove( )
     {
-        getTById();
-        if(t!=null)
+        if( isListaEmpty( ) )
         {
-            list.remove( t );
-            flag2 = false;
-            System.out.println("> Elemento eliminado con éxito.");
+            System.out.println( ">  No hay elementos para eliminar." );
+            return;
+        }
+        flag2 = true;
+        while ( flag2 )
+        {
+            print( );
+            System.out.print( "> Ingrese el ID del elemento a eliminar: " );
+            t = list.stream().filter( e -> e.getId().equals( ReadUtil.readInt( ) ) ).findFirst().orElse( null );
+            if( t==null )
+            {
+                System.out.println( "> ID incorrecto, inténtelo nuevamente." );
+            }
+            else
+            {
+                list.remove( t );
+                flag2 = false;
+                System.out.println( "> Elemento eliminado con éxito." );
+            }
         }
     }
 
     public void edit( )
     {
-        getTById();
-        if(t!=null)
+        if( isListaEmpty( ) )
         {
-            processEditT( t );
-            flag2 = false;
-            System.out.println("> Elemento modificado con éxito.");
+            System.out.println( "> No hay elementos para editar." );
+            return;
+        }
+        flag2 = true;
+        while ( flag2 )
+        {
+            print( );
+            System.out.print( "> Ingrese el ID del elemento a editar: " );
+            t = list.stream().filter( e -> e.getId().equals( ReadUtil.readInt( ) ) ).findFirst().orElse( null );
+            if( t == null )
+            {
+                System.out.println( "> ID incorrecto, inténtelo nuevamente" );
+            }
+            else
+            {
+                processEditT( t );
+                flag2 = false;
+                System.out.println( "> Elemento modificado con éxito." );
+            }
         }
     }
 
@@ -184,25 +214,5 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
                 Menu.opcionInvalida();
         }
     }
-
-    public T getTById() {
-        if (isListaEmpty()) {
-            System.out.println("> No hay elementos registrados.");
-            return null;
-        }
-        while (true) {
-            System.out.print("> Ingrese el ID del elemento: ");
-            int id = ReadUtil.readInt();
-            T t = list.stream()
-                    .filter(e -> e.getId().equals(id))
-                    .findFirst()
-                    .orElse(null);
-            if (t != null) {
-                return t;
-            }
-            System.out.println("> ID incorrecto, inténtelo nuevamente.");
-        }
-    }
-
 
 }

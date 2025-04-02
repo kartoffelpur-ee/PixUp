@@ -1,14 +1,15 @@
-package org.floresmateo.vista.consola;
+package org.floresmateo.vista.consola.usuario;
 
 import org.floresmateo.model.Estado;
 import org.floresmateo.model.Municipio;
 import org.floresmateo.util.ReadUtil;
+import org.floresmateo.vista.consola.GestorCatalogos;
 
 import java.io.File;
 
 public class MunicipioCatalogo extends GestorCatalogos<Municipio>
 {
-    public static MunicipioCatalogo municipioCatalogo;
+    private static MunicipioCatalogo municipioCatalogo;
     private EstadoCatalogo estadoCatalogo;
 
     public static MunicipioCatalogo getInstance( )
@@ -51,7 +52,7 @@ public class MunicipioCatalogo extends GestorCatalogos<Municipio>
     @Override
     public void processEditT(Municipio municipio)
     {
-        System.out.println("> ID del municipio siendo editado: "+municipio.getId());
+        System.out.println("\n> ID del municipio siendo editado: "+municipio.getId());
         System.out.println("> Municipio siendo editado: "+municipio.getNombre());
         System.out.print("> Ingrese el nuevo nombre del municipio: ");
         municipio.setNombre( ReadUtil.read() );
@@ -90,7 +91,7 @@ public class MunicipioCatalogo extends GestorCatalogos<Municipio>
 
     @Override
     public File getFile() {
-        return new File("./src/main/resources/Municipios.object" );
+        return new File("./src/main/fileStorage/Municipios.list" );
     }
 }
 

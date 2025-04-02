@@ -1,13 +1,14 @@
-package org.floresmateo.vista.consola;
+package org.floresmateo.vista.consola.usuario;
 
 import org.floresmateo.model.Estado;
 import org.floresmateo.util.ReadUtil;
+import org.floresmateo.vista.consola.GestorCatalogos;
 
 import java.io.File;
 
 public class EstadoCatalogo extends GestorCatalogos<Estado>
 {
-    public static EstadoCatalogo estadoCatalogo;
+    private static EstadoCatalogo estadoCatalogo;
 
     public static EstadoCatalogo getInstance( )
     {
@@ -37,7 +38,7 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
     @Override
     public void processEditT(Estado estado)
     {
-        System.out.println("> ID del estado siendo editado: "+estado.getId());
+        System.out.println("\n> ID del estado siendo editado: "+estado.getId());
         System.out.println("> Estado siendo editado: "+estado.getNombre());
         System.out.print("> Ingrese el nuevo nombre del estado: ");
         estado.setNombre( ReadUtil.read() );
@@ -46,7 +47,7 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
     @Override
     public File getFile()
     {
-        return new File("./src/main/resources/Estados.object" );
+        return new File("./src/main/fileStorage/Estados.object" );
     }
 
     public Estado getEstadoById() {
