@@ -1,5 +1,7 @@
 package org.floresmateo.model;
 
+import java.sql.Date;
+
 public class Disco extends Catalogo
 {
     private String tituloDisco;
@@ -10,13 +12,21 @@ public class Disco extends Catalogo
     private String imagen;
     private Disquera disquera;
     private Artista artista;
-    private GeneroMusical generoMusical;
+    private Genero_Musical generoMusical;
 
     public Disco()
     {
     }
 
-    public Disco(String tituloDisco, double precio, int existencias, double descuento, String fechaLanzamiento, String imagen, Disquera disquera, Artista artista, GeneroMusical generoMusical)
+    public Disco(String tituloDisco,
+                 double precio,
+                 int existencias,
+                 double descuento,
+                 String fechaLanzamiento,
+                 String imagen,
+                 Disquera disquera,
+                 Artista artista,
+                 Genero_Musical generoMusical)
     {
         this.tituloDisco = tituloDisco;
         this.precio = precio;
@@ -39,19 +49,9 @@ public class Disco extends Catalogo
         this.tituloDisco = tituloDisco;
     }
 
-    public double getPrecio()
-    {
-        return precio;
-    }
-
     public void setPrecio(double precio)
     {
         this.precio = precio;
-    }
-
-    public int getExistencias()
-    {
-        return existencias;
     }
 
     public void setExistencias(int existencias)
@@ -59,19 +59,9 @@ public class Disco extends Catalogo
         this.existencias = existencias;
     }
 
-    public double getDescuento()
-    {
-        return descuento;
-    }
-
     public void setDescuento(double descuento)
     {
         this.descuento = descuento;
-    }
-
-    public String getFechaLanzamiento()
-    {
-        return fechaLanzamiento;
     }
 
     public void setFechaLanzamiento(String fechaLanzamiento)
@@ -79,19 +69,9 @@ public class Disco extends Catalogo
         this.fechaLanzamiento = fechaLanzamiento;
     }
 
-    public String getImagen()
-    {
-        return imagen;
-    }
-
     public void setImagen(String imagen)
     {
         this.imagen = imagen;
-    }
-
-    public Disquera getDisquera()
-    {
-        return disquera;
     }
 
     public void setDisquera(Disquera disquera)
@@ -99,22 +79,12 @@ public class Disco extends Catalogo
         this.disquera = disquera;
     }
 
-    public Artista getArtista()
-    {
-        return artista;
-    }
-
     public void setArtista(Artista artista)
     {
         this.artista = artista;
     }
 
-    public GeneroMusical getGeneroMusical()
-    {
-        return generoMusical;
-    }
-
-    public void setGeneroMusical(GeneroMusical generoMusical)
+    public void setGeneroMusical(Genero_Musical generoMusical)
     {
         this.generoMusical = generoMusical;
     }
@@ -136,3 +106,4 @@ public class Disco extends Catalogo
                 '}';
     }
 }
+

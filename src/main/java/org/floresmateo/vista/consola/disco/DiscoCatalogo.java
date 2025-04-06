@@ -1,13 +1,11 @@
 package org.floresmateo.vista.consola.disco;
 
-import org.floresmateo.model.Artista;
-import org.floresmateo.model.Disco;
-import org.floresmateo.model.Disquera;
-import org.floresmateo.model.GeneroMusical;
+import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.jdbc.impl.DiscoJdbcImpl;
+import org.floresmateo.model.*;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.Menu;
 import org.floresmateo.vista.consola.GestorCatalogos;
-
 import java.io.File;
 
 public class DiscoCatalogo extends GestorCatalogos<Disco>
@@ -49,34 +47,16 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
         disco.setImagen( ReadUtil.read() );
 
         Disquera disquera = DisqueraCatalogo.getInstance().getDisqueraById();
-        if(disquera==null)
-        {
-            return false;
-        }
-        else
-        {
-            disco.setDisquera( disquera );
-        }
+        if(disquera==null) { return false; }
+        else { disco.setDisquera( disquera ); }
 
         Artista artista = ArtistaCatalogo.getInstance().getArtistaById();
-        if(artista==null)
-        {
-            return false;
-        }
-        else
-        {
-            disco.setArtista(artista);
-        }
+        if(artista==null) { return false; }
+        else { disco.setArtista(artista); }
 
-        GeneroMusical generoMusical = GeneroMusicalCatalogo.getInstance().getGeneroById();
-        if(generoMusical==null)
-        {
-            return false;
-        }
-        else
-        {
-            disco.setGeneroMusical( generoMusical );
-        }
+        Genero_Musical generoMusical = GeneroMusicalCatalogo.getInstance().getGeneroById();
+        if(generoMusical==null) { return false; }
+        else { disco.setGeneroMusical( generoMusical ); }
 
         return true;
     }
@@ -120,36 +100,24 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
                 break;
             case 7:
                 Disquera disquera = DisqueraCatalogo.getInstance().getDisqueraById();
-                if(disquera==null)
-                {
+                if(disquera==null) {
                     System.out.println("> Disquera no encontrada. No se pudo actualizar; compruébelo e inténtelo de nuevo.");
                 }
-                else
-                {
-                    disco.setDisquera( disquera );
-                }
+                else { disco.setDisquera( disquera ); }
                 break;
             case 8:
                 Artista artista = ArtistaCatalogo.getInstance().getArtistaById();
-                if(artista==null)
-                {
+                if(artista==null) {
                     System.out.println("> Artista no encontrado. No se pudo actualizar; compruébelo e inténtelo de nuevo.");
                 }
-                else
-                {
-                    disco.setArtista(artista);
-                }
+                else { disco.setArtista(artista); }
                 break;
             case 9:
-                GeneroMusical generoMusical = GeneroMusicalCatalogo.getInstance().getGeneroById();
-                if(generoMusical==null)
-                {
+                Genero_Musical generoMusical = GeneroMusicalCatalogo.getInstance().getGeneroById();
+                if(generoMusical==null) {
                     System.out.println("> Género musical no encontrado. No se pudo actualizar; compruébelo e inténtelo de nuevo.");
                 }
-                else
-                {
-                    disco.setGeneroMusical( generoMusical );
-                }
+                else { disco.setGeneroMusical( generoMusical ); }
                 break;
             default:
                 Menu.opcionInvalida();
@@ -159,6 +127,13 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
     @Override
     public File getFile() {
         return new File( "./src/main/fileStorage/Discos.list" );
+    }
+
+    @Override
+    public void print()
+    {
+        GenericJdbc<Disco> DiscoJdbc = new DiscoJdbcImpl();
+        DiscoJdbc.findAll().stream().forEach(System.out::println);
     }
 
     public Disco getDiscoById() {

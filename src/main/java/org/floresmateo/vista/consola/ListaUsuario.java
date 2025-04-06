@@ -1,9 +1,7 @@
 package org.floresmateo.vista.consola;
 
 import org.floresmateo.vista.*;
-import org.floresmateo.vista.consola.usuario.ColoniaCatalogo;
-import org.floresmateo.vista.consola.usuario.EstadoCatalogo;
-import org.floresmateo.vista.consola.usuario.MunicipioCatalogo;
+import org.floresmateo.vista.consola.usuario.*;
 
 public class ListaUsuario extends LeerAcciones
 {
@@ -74,3 +72,4 @@ public class ListaUsuario extends LeerAcciones
         }
     }
 }
+

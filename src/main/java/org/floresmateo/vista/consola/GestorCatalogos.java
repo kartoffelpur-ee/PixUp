@@ -1,12 +1,12 @@
 package org.floresmateo.vista.consola;
-
+import org.floresmateo.jdbc.Conexion;
 import org.floresmateo.model.Catalogo;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.LeerAcciones;
 import org.floresmateo.vista.Menu;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.sql.*;
 import java.util.List;
 
 public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
@@ -15,10 +15,13 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
     protected T t;
     protected boolean flag2;
     protected File file;
+    private Connection connection;
 
     public GestorCatalogos()
     {
-        list = new ArrayList<>();
+        Conexion conexion = new Conexion() {};
+        this.connection = conexion.getConnection();
+        //list = new ArrayList<>();
     }
 
     public boolean isListaEmpty()
@@ -29,6 +32,8 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
     public abstract T newT();
     public abstract boolean processNewT(T t);
     public abstract void processEditT(T t);
+    public abstract File getFile( );
+    public abstract void print();
 
     public void add( )
     {
@@ -92,18 +97,6 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
             }
         }
     }
-
-    public void print( )
-    {
-        if(isListaEmpty())
-        {
-            System.out.println("> No hay elementos en el catálogo.");
-        }
-        list.forEach(System.out::println);
-    }
-
-    public abstract File getFile( );
-
     private void saveOnFile()
     {
         ObjectOutputStream oos = null;
@@ -136,7 +129,6 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
     {
         ObjectInputStream ois = null;
         FileInputStream fis = null;
-
         try
         {
             file = getFile( );

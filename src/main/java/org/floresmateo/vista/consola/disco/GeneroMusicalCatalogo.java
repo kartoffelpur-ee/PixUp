@@ -1,12 +1,13 @@
 package org.floresmateo.vista.consola.disco;
 
-import org.floresmateo.model.GeneroMusical;
+import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.jdbc.impl.Genero_MusicalJdbcImpl;
+import org.floresmateo.model.Genero_Musical;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
-
 import java.io.File;
 
-public class GeneroMusicalCatalogo extends GestorCatalogos<GeneroMusical>
+public class GeneroMusicalCatalogo extends GestorCatalogos<Genero_Musical>
 {
     private static GeneroMusicalCatalogo generoMusicalCatalogo;
 
@@ -25,19 +26,19 @@ public class GeneroMusicalCatalogo extends GestorCatalogos<GeneroMusical>
     }
 
     @Override
-    public GeneroMusical newT() {
-        return new GeneroMusical();
+    public Genero_Musical newT() {
+        return new Genero_Musical();
     }
 
     @Override
-    public boolean processNewT(GeneroMusical generoMusical) {
+    public boolean processNewT(Genero_Musical generoMusical) {
         System.out.print("> Ingrese el género musical: ");
         generoMusical.setGenero( ReadUtil.read() );
         return true;
     }
 
     @Override
-    public void processEditT(GeneroMusical generoMusical) {
+    public void processEditT(Genero_Musical generoMusical) {
         System.out.println("\n> ID del género siendo editado: "+generoMusical.getId());
         System.out.println("> Nombre del género siendo editado: "+generoMusical.getGenero());
         System.out.print("> Ingrese el nuevo nombre del género: ");
@@ -49,7 +50,14 @@ public class GeneroMusicalCatalogo extends GestorCatalogos<GeneroMusical>
         return new File("./src/main/fileStorage/Generos.list");
     }
 
-    public GeneroMusical getGeneroById() {
+    @Override
+    public void print()
+    {
+        GenericJdbc<Genero_Musical> generoMusicalJdbc = new Genero_MusicalJdbcImpl();
+        generoMusicalJdbc.findAll().stream().forEach(System.out::println);
+    }
+
+    public Genero_Musical getGeneroById() {
         if (isListaEmpty()) {
             System.out.println("> No hay géneros registrados.");
             return null;
@@ -57,7 +65,7 @@ public class GeneroMusicalCatalogo extends GestorCatalogos<GeneroMusical>
         while (true) {
             System.out.print("> Ingrese el ID del género: ");
             int id = ReadUtil.readInt();
-            GeneroMusical generoMusical = list.stream()
+            Genero_Musical generoMusical = list.stream()
                     .filter(e -> e.getId().equals(id))
                     .findFirst()
                     .orElse(null);

@@ -1,5 +1,4 @@
 package org.floresmateo.model;
-
 import java.io.Serializable;
 
 public class Municipio extends Catalogo implements Serializable

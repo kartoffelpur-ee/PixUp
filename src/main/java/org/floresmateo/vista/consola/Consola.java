@@ -34,7 +34,6 @@ public class Consola extends LeerAcciones
     {
         return 1;
     }
-
     @Override
     public int valorMaxMenu()
     {

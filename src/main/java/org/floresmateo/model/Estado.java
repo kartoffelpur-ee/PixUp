@@ -1,5 +1,4 @@
 package org.floresmateo.model;
-
 import java.io.Serializable;
 
 public class Estado extends Catalogo implements Serializable

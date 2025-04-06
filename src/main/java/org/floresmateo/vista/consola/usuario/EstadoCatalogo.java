@@ -1,5 +1,7 @@
 package org.floresmateo.vista.consola.usuario;
 
+import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.jdbc.impl.EstadoJdbcImpl;
 import org.floresmateo.model.Estado;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
@@ -8,6 +10,7 @@ import java.io.File;
 
 public class EstadoCatalogo extends GestorCatalogos<Estado>
 {
+
     private static EstadoCatalogo estadoCatalogo;
 
     public static EstadoCatalogo getInstance( )
@@ -42,6 +45,13 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
         System.out.println("> Estado siendo editado: "+estado.getNombre());
         System.out.print("> Ingrese el nuevo nombre del estado: ");
         estado.setNombre( ReadUtil.read() );
+    }
+
+    @Override
+    public void print()
+    {
+        GenericJdbc<Estado> estadoJdbc = new EstadoJdbcImpl();
+        estadoJdbc.findAll().stream().forEach(System.out::println);
     }
 
     @Override

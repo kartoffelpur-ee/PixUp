@@ -1,5 +1,7 @@
 package org.floresmateo.vista.consola.usuario;
 
+import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.jdbc.impl.MunicipioJdbcImpl;
 import org.floresmateo.model.Estado;
 import org.floresmateo.model.Municipio;
 import org.floresmateo.util.ReadUtil;
@@ -10,7 +12,7 @@ import java.io.File;
 public class MunicipioCatalogo extends GestorCatalogos<Municipio>
 {
     private static MunicipioCatalogo municipioCatalogo;
-    private EstadoCatalogo estadoCatalogo;
+    private final EstadoCatalogo estadoCatalogo;
 
     public static MunicipioCatalogo getInstance( )
     {
@@ -92,6 +94,13 @@ public class MunicipioCatalogo extends GestorCatalogos<Municipio>
     @Override
     public File getFile() {
         return new File("./src/main/fileStorage/Municipios.list" );
+    }
+
+    @Override
+    public void print()
+    {
+        GenericJdbc<Municipio> municipioJdbc = new MunicipioJdbcImpl();
+        municipioJdbc.findAll().stream().forEach(System.out::println);
     }
 }
 

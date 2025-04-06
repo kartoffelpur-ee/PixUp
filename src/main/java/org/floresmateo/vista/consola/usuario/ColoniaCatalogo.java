@@ -1,5 +1,7 @@
 package org.floresmateo.vista.consola.usuario;
 
+import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.jdbc.impl.ColoniaJdbcImpl;
 import org.floresmateo.model.Colonia;
 import org.floresmateo.model.Municipio;
 import org.floresmateo.util.ReadUtil;
@@ -42,11 +44,8 @@ public class ColoniaCatalogo extends GestorCatalogos<Colonia>
         colonia.setCp( ReadUtil.read() );
         Municipio municipio = municipioCatalogo.getMunicipioById();
 
-        if(municipio==null)
-        {
-            return false;
-        }
-        colonia.setMunicipio(municipio);
+        if(municipio==null) { return false; }
+        else { colonia.setMunicipio(municipio); }
         return true;
     }
 
@@ -73,8 +72,16 @@ public class ColoniaCatalogo extends GestorCatalogos<Colonia>
     }
 
     @Override
-    public File getFile() {
+    public File getFile()
+    {
         return new File("./src/main/fileStorage/Colonias.list" );
+    }
+
+    @Override
+    public void print()
+    {
+        GenericJdbc<Colonia> coloniaJdbc = new ColoniaJdbcImpl();
+        coloniaJdbc.findAll().stream().forEach(System.out::println);
     }
 }
 

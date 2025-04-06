@@ -1,5 +1,4 @@
 package org.floresmateo.vista;
-
 import org.floresmateo.util.ReadUtil;
 
 public abstract class LeerAcciones implements Ejecutable

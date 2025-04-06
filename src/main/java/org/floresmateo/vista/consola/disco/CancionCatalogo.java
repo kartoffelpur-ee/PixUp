@@ -1,11 +1,10 @@
 package org.floresmateo.vista.consola.disco;
 
-import org.floresmateo.model.Cancion;
-import org.floresmateo.model.Disco;
-import org.floresmateo.model.Disquera;
+import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.jdbc.impl.CancionJdbcImpl;
+import org.floresmateo.model.*;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
-
 import java.io.File;
 
 public class CancionCatalogo extends GestorCatalogos<Cancion>
@@ -39,14 +38,8 @@ public class CancionCatalogo extends GestorCatalogos<Cancion>
         cancion.setDuracion( ReadUtil.readDouble() );
 
         Disco disco = DiscoCatalogo.getInstance().getDiscoById();
-        if(disco==null)
-        {
-            return false;
-        }
-        else
-        {
-            cancion.setDisco( disco );
-        }
+        if(disco==null) { return false; }
+        else { cancion.setDisco( disco ); }
 
         return true;
     }
@@ -63,7 +56,7 @@ public class CancionCatalogo extends GestorCatalogos<Cancion>
         Disco disco = DiscoCatalogo.getInstance().getDiscoById();
         if(disco==null)
         {
-            System.out.println("> Disco no encontrado. No se pudo actualizar; compruébelo e inténtelo de nuevo.");;
+            System.out.println("> Disco no encontrado. No se pudo actualizar; compruébelo e inténtelo de nuevo.");
         }
         else
         {
@@ -75,4 +68,12 @@ public class CancionCatalogo extends GestorCatalogos<Cancion>
     public File getFile() {
         return new File( "./src/main/fileStorage/Canciones.object" );
     }
+
+    @Override
+    public void print()
+    {
+        GenericJdbc<Cancion> CancionJdbc = new CancionJdbcImpl();
+        CancionJdbc.findAll().stream().forEach(System.out::println);
+    }
 }
+

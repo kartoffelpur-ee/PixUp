@@ -1,9 +1,7 @@
 package org.floresmateo.vista.consola;
-
 import org.floresmateo.vista.Ejecutable;
 import org.floresmateo.vista.LeerAcciones;
 import org.floresmateo.vista.Menu;
-import org.floresmateo.vista.consola.*;
 
 public class ListaCatalogos extends LeerAcciones
 {
@@ -35,7 +33,6 @@ public class ListaCatalogos extends LeerAcciones
     {
         return 1;
     }
-
     @Override
     public int valorMaxMenu()
     {
@@ -68,3 +65,4 @@ public class ListaCatalogos extends LeerAcciones
         }
     }
 }
+

@@ -1,10 +1,10 @@
 package org.floresmateo.vista.consola.disco;
 
+import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.jdbc.impl.ArtistaJdbcImpl;
 import org.floresmateo.model.Artista;
-import org.floresmateo.model.Estado;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
-
 import java.io.File;
 
 public class ArtistaCatalogo extends GestorCatalogos<Artista>
@@ -51,6 +51,13 @@ public class ArtistaCatalogo extends GestorCatalogos<Artista>
     @Override
     public File getFile() {
         return new File("./src/main/fileStorage/Artistas.object");
+    }
+
+    @Override
+    public void print()
+    {
+        GenericJdbc<Artista> artistaJdbc = new ArtistaJdbcImpl();
+        artistaJdbc.findAll().stream().forEach(System.out::println);
     }
 
     public Artista getArtistaById() {

@@ -1,9 +1,10 @@
 package org.floresmateo.vista.consola.disco;
 
+import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.jdbc.impl.DisqueraJdbcImpl;
 import org.floresmateo.model.Disquera;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
-
 import java.io.File;
 
 public class DisqueraCatalogo extends GestorCatalogos<Disquera>
@@ -47,6 +48,13 @@ public class DisqueraCatalogo extends GestorCatalogos<Disquera>
     @Override
     public File getFile() {
         return new File( "./src/main/fileStorage/Disqueras.list" );
+    }
+
+    @Override
+    public void print()
+    {
+        GenericJdbc<Disquera> disqueraJdbc = new DisqueraJdbcImpl();
+        disqueraJdbc.findAll().stream().forEach(System.out::println);
     }
 
     public Disquera getDisqueraById() {
