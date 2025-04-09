@@ -99,8 +99,7 @@ public class MunicipioCatalogo extends GestorCatalogos<Municipio>
     @Override
     public void print()
     {
-        GenericJdbc<Municipio> municipioJdbc = new MunicipioJdbcImpl();
-        municipioJdbc.findAll().stream().forEach(System.out::println);
+
     }
 }
 

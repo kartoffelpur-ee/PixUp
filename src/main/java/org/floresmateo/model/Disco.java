@@ -44,6 +44,46 @@ public class Disco extends Catalogo
         return tituloDisco;
     }
 
+    public double getPrecio()
+    {
+        return precio;
+    }
+
+    public int getExistencias()
+    {
+        return existencias;
+    }
+
+    public double getDescuento()
+    {
+        return descuento;
+    }
+
+    public String getFechaLanzamiento()
+    {
+        return fechaLanzamiento;
+    }
+
+    public String getImagen()
+    {
+        return imagen;
+    }
+
+    public Disquera getDisquera()
+    {
+        return disquera;
+    }
+
+    public Artista getArtista()
+    {
+        return artista;
+    }
+
+    public Genero_Musical getGeneroMusical()
+    {
+        return generoMusical;
+    }
+
     public void setTituloDisco(String tituloDisco)
     {
         this.tituloDisco = tituloDisco;

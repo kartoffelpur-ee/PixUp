@@ -72,8 +72,7 @@ public class CancionCatalogo extends GestorCatalogos<Cancion>
     @Override
     public void print()
     {
-        GenericJdbc<Cancion> CancionJdbc = new CancionJdbcImpl();
-        CancionJdbc.findAll().stream().forEach(System.out::println);
+
     }
 }
 

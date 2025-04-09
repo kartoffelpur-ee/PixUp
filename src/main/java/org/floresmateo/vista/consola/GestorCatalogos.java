@@ -17,9 +17,9 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
     protected File file;
     private Connection connection;
 
-    public GestorCatalogos()
-    {
-        Conexion conexion = new Conexion() {};
+    public GestorCatalogos() {
+        Conexion conexion = new Conexion() {
+        };
         this.connection = conexion.getConnection();
         //list = new ArrayList<>();
     }
@@ -40,8 +40,6 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
         t = newT( );
         if(processNewT( t ))
         {
-            t.setId( list.size()+1 );
-            list.add( t );
             System.out.println("> Elemento añadido con éxito.");
         }
     }
@@ -72,8 +70,7 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
         }
     }
 
-    public void edit( )
-    {
+        /*
         if( isListaEmpty( ) )
         {
             System.out.println( "> No hay elementos para editar." );
@@ -96,7 +93,9 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
                 System.out.println( "> Elemento modificado con éxito." );
             }
         }
-    }
+
+         */
+
     private void saveOnFile()
     {
         ObjectOutputStream oos = null;
@@ -191,7 +190,7 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
                 remove( );
                 break;
             case 3:
-                edit( );
+                processEditT(t);
                 break;
             case 4:
                 print( );

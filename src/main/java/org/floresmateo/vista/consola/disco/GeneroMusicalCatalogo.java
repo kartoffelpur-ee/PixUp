@@ -53,8 +53,7 @@ public class GeneroMusicalCatalogo extends GestorCatalogos<Genero_Musical>
     @Override
     public void print()
     {
-        GenericJdbc<Genero_Musical> generoMusicalJdbc = new Genero_MusicalJdbcImpl();
-        generoMusicalJdbc.findAll().stream().forEach(System.out::println);
+
     }
 
     public Genero_Musical getGeneroById() {

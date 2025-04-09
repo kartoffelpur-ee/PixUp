@@ -53,8 +53,7 @@ public class DisqueraCatalogo extends GestorCatalogos<Disquera>
     @Override
     public void print()
     {
-        GenericJdbc<Disquera> disqueraJdbc = new DisqueraJdbcImpl();
-        disqueraJdbc.findAll().stream().forEach(System.out::println);
+
     }
 
     public Disquera getDisqueraById() {

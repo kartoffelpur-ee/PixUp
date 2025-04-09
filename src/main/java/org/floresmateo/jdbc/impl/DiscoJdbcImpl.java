@@ -2,11 +2,8 @@ package org.floresmateo.jdbc.impl;
 
 import org.floresmateo.jdbc.Conexion;
 import org.floresmateo.jdbc.GenericJdbc;
-import org.floresmateo.model.Artista;
+import org.floresmateo.model.*;
 import org.floresmateo.model.Disco;
-import org.floresmateo.model.Disquera;
-import org.floresmateo.model.Genero_Musical;
-
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,8 +11,24 @@ import java.util.List;
 
 public class DiscoJdbcImpl extends Conexion implements GenericJdbc<Disco>
 {
+    private static DiscoJdbcImpl discoJdbc;
+
+    private DiscoJdbcImpl()
+    {
+    }
+
+    public static DiscoJdbcImpl getInstance()
+    {
+        if(discoJdbc==null)
+        {
+            discoJdbc = new DiscoJdbcImpl();
+        }
+        return discoJdbc;
+    }
+
     @Override
-    public List<Disco> findAll() {
+    public List<Disco> findAll()
+    {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -28,54 +41,220 @@ public class DiscoJdbcImpl extends Conexion implements GenericJdbc<Disco>
                 "INNER JOIN tbl_genero_musical on tbl_disco.tbl_genero_musical_id = tbl_genero_musical.id" +
                 ";";
 
+
         try
         {
-            connection = getConnection();
-            if (connection==null)
+            if( !openConnection() )
             {
                 return null;
             }
-            statement = connection.createStatement( );
+
+            statement = connection.createStatement();
             resultSet = statement.executeQuery( sql );
-            if (resultSet==null)
+
+            if( resultSet == null )
             {
                 return null;
             }
 
-            list = new ArrayList<>( );
+            list =  new ArrayList<>( );
 
-            while( resultSet.next() )
+            while( resultSet.next( ) )
             {
                 disco = new Disco();
-                disco.setId( resultSet.getInt(1) );
-                disco.setTituloDisco( resultSet.getString(2) );
-                disco.setPrecio( resultSet.getDouble(3) );
-                disco.setExistencias( resultSet.getInt(4) );
-                disco.setDescuento( resultSet.getDouble(5) );
+                disco.setId( resultSet.getInt("ID") );
+                disco.setTituloDisco( resultSet.getString("TITULO") );
+                disco.setPrecio( resultSet.getDouble("PRECIO") );
+                disco.setExistencias( resultSet.getInt("EXISTENCIA") );
+                disco.setDescuento( resultSet.getDouble("DESCUENTO") );
 
-                Date date = resultSet.getDate(6);
+                Date date = resultSet.getDate("FECHA_LANZAMIENTO");
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 String fechaFormateada = simpleDateFormat.format(date);
 
                 disco.setFechaLanzamiento( fechaFormateada );
-                disco.setImagen( resultSet.getString(7) );
-                disco.setArtista( new Artista(resultSet.getString(11)) );
-                disco.setDisquera( new Disquera(resultSet.getString(12)) );
-                disco.setGeneroMusical( new Genero_Musical(resultSet.getString(13)) );
+                disco.setImagen( resultSet.getString("IMAGEN") );
+                disco.setArtista( new Artista(resultSet.getString("ARTISTA")) );
+                disco.setDisquera( new Disquera(resultSet.getString("DISQUERA")) );
+                disco.setGeneroMusical( new Genero_Musical(resultSet.getString("GENERO")));
 
                 list.add(disco);
             }
 
-            resultSet.close();
-            statement.close();
-            connection.close();
+            resultSet.close( );
+            closeConnection( );
 
             return list;
         }
         catch (SQLException e)
         {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean save(Disco disco)
+    {
+        PreparedStatement preparedStatement = null;
+        String query = "INSERT INTO tbl_disco (TITULO, PRECIO, " +
+                "EXISTENCIA, DESCUENTO, FECHA_LANZAMIENTO, IMAGEN, TBL_ARTISTA_ID, TBL_DISQUERA_ID, TBL_GENERO_MUSICAL_ID) " +
+                "VALUES ( ?,?,?,?,?,?,?,?,? )";
+        int res = 0;
+
+        try
+        {
+            if( !openConnection() )
+            {
+                System.out.println("> Error de conexión.");
+                return false;
+            }
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, disco.getTituloDisco());
+            preparedStatement.setDouble(2, disco.getPrecio());
+            preparedStatement.setInt(3, disco.getExistencias());
+            preparedStatement.setDouble(4, disco.getDescuento());
+
+            java.sql.Date fecha = java.sql.Date.valueOf(disco.getFechaLanzamiento());
+
+            preparedStatement.setDate(5,fecha);
+            preparedStatement.setString(6, disco.getImagen());
+            preparedStatement.setInt(7, disco.getArtista().getId());
+            preparedStatement.setInt(8, disco.getDisquera().getId());
+            preparedStatement.setInt(9, disco.getGeneroMusical().getId());
+
+            res = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
+            closeConnection();
+
+            return res==1;
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
-        return null;
+        return false;
+    }
+
+    @Override
+    public boolean update(Disco disco)
+    {
+        PreparedStatement preparedStatement = null;
+        String query = "UPDATE tbl_disco SET TITULO = ?, PRECIO = ?, EXISTENCIA = ?, WHERE ID = ?";
+        int res = 0;
+
+        try
+        {
+            if( !openConnection() )
+            {
+                System.out.println("> Error de conexión.");
+                return false;
+            }
+            preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, disco.getTituloDisco());
+            preparedStatement.setDouble(2, disco.getPrecio());
+            preparedStatement.setInt(3, disco.getExistencias());
+            preparedStatement.setInt(4, disco.getId());
+
+            res = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
+            closeConnection();
+
+            return res==1;
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(Disco disco)
+    {
+        PreparedStatement preparedStatement = null;
+        String query = "DELETE FROM tbl_disco WHERE ID = ?";
+        int res = 0;
+
+        try
+        {
+            if( !openConnection() )
+            {
+                System.out.println("> Error de conexión.");
+                return false;
+            }
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, disco.getId());
+
+            res = preparedStatement.executeUpdate();
+            preparedStatement.close();
+            closeConnection();
+
+            return res==1;
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public Disco findById(Integer id)
+    {
+        Disco disco = null;
+        String query = "SELECT tbl_disco.*, tbl_artista.ARTISTA AS ARTISTA, tbl_disquera.DISQUERA AS DISQUERA, tbl_genero_musical.GENERO AS GENERO " +
+                "FROM tbl_disco " +
+                "INNER JOIN tbl_artista ON tbl_disco.tbl_artista_id = tbl_artista.id " +
+                "INNER JOIN tbl_disquera ON tbl_disco.tbl_disquera_id = tbl_disquera.id " +
+                "INNER JOIN tbl_genero_musical on tbl_disco.tbl_genero_musical_id = tbl_genero_musical.id " +
+                "WHERE tbl_disco.ID = ?;";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            if( !openConnection() )
+            {
+                return null;
+            }
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next())
+            {
+                disco = new Disco();
+                disco.setId( resultSet.getInt("ID") );
+                disco.setTituloDisco( resultSet.getString("TITULO") );
+                disco.setPrecio( resultSet.getDouble("PRECIO") );
+                disco.setExistencias( resultSet.getInt("EXISTENCIA") );
+                disco.setDescuento( resultSet.getDouble("DESCUENTO") );
+
+                Date date = resultSet.getDate("FECHA_LANZAMIENTO");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                String fechaFormateada = simpleDateFormat.format(date);
+
+                disco.setFechaLanzamiento( fechaFormateada );
+                disco.setImagen( resultSet.getString("IMAGEN") );
+                disco.setArtista( new Artista(resultSet.getString("ARTISTA")) );
+                disco.setDisquera( new Disquera(resultSet.getString("DISQUERA")) );
+                disco.setGeneroMusical( new Genero_Musical(resultSet.getString("GENERO")));
+            }
+
+            preparedStatement.close();
+            closeConnection();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        return disco;
     }
 }

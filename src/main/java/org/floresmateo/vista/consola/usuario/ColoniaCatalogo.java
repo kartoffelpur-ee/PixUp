@@ -80,8 +80,8 @@ public class ColoniaCatalogo extends GestorCatalogos<Colonia>
     @Override
     public void print()
     {
-        GenericJdbc<Colonia> coloniaJdbc = new ColoniaJdbcImpl();
-        coloniaJdbc.findAll().stream().forEach(System.out::println);
+
+
     }
 }
 

@@ -132,8 +132,7 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
     @Override
     public void print()
     {
-        GenericJdbc<Disco> DiscoJdbc = new DiscoJdbcImpl();
-        DiscoJdbc.findAll().stream().forEach(System.out::println);
+
     }
 
     public Disco getDiscoById() {

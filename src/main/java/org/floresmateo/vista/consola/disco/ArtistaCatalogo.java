@@ -56,8 +56,7 @@ public class ArtistaCatalogo extends GestorCatalogos<Artista>
     @Override
     public void print()
     {
-        GenericJdbc<Artista> artistaJdbc = new ArtistaJdbcImpl();
-        artistaJdbc.findAll().stream().forEach(System.out::println);
+
     }
 
     public Artista getArtistaById() {

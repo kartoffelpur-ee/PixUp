@@ -7,11 +7,13 @@ import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
 
 import java.io.File;
+import java.util.List;
 
 public class EstadoCatalogo extends GestorCatalogos<Estado>
 {
 
     private static EstadoCatalogo estadoCatalogo;
+    private static final GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
 
     public static EstadoCatalogo getInstance( )
     {
@@ -33,25 +35,33 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
     @Override
     public boolean processNewT(Estado estado)
     {
+        estado = new Estado();
         System.out.print("> Teclee el nombre del estado: ");
         estado.setNombre( ReadUtil.read() );
+        estadoJdbc.save(estado);
         return true;
     }
 
     @Override
     public void processEditT(Estado estado)
     {
+        GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
+        estado = new Estado();
         System.out.println("\n> ID del estado siendo editado: "+estado.getId());
         System.out.println("> Estado siendo editado: "+estado.getNombre());
         System.out.print("> Ingrese el nuevo nombre del estado: ");
         estado.setNombre( ReadUtil.read() );
+        estado.setId(1);
+        estadoJdbc.update(estado);
     }
 
     @Override
     public void print()
     {
-        GenericJdbc<Estado> estadoJdbc = new EstadoJdbcImpl();
-        estadoJdbc.findAll().stream().forEach(System.out::println);
+        GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
+        List<Estado> list = estadoJdbc.findAll();
+
+        list.stream().forEach(System.out::println);
     }
 
     @Override

@@ -4,11 +4,22 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public abstract class Conexion
+public abstract class Conexion<T>
 {
     public static String user = "root";
     public static String password = "n0m3l0";
     public static String db = "pixup";
+    public static String server = "127.0.0.1";
+    protected Connection connection;
+
+    public Conexion()
+    {
+    }
+
+    public Connection getConnection()
+    {
+        return this.connection;
+    }
 
     public boolean testDriver()
     {
@@ -24,40 +35,57 @@ public abstract class Conexion
         return false;
     }
 
-    public Connection getConnection(String user, String password, String db, String server)
+    private boolean loadConnection(String user, String password, String db, String server)
     {
         String url = null;
-        if (user == null || password == null || db == null || server == null) {
-            return null;
+        if (user == null || password == null || db == null || server == null)
+        {
+            return false;
         }
         if ("".equals(user) || "".equals(password) || "".equals(db) || "".equals(server))
         {
-            return null;
+            return false;
         }
         url = String.format("jdbc:mysql://%s/%s?user=%s&password=%s", server, db, user, password);
         try
         {
-            if (!testDriver())
+            if (!testDriver( ) )
             {
-                return null;
+                return false;
             }
-            return DriverManager.getConnection(url);
+            connection = DriverManager.getConnection(url);
+            return connection != null;
         }
         catch (SQLException ex)
         {
             ex.printStackTrace();
         }
-        return null;
+        return false;
     }
 
-    public Connection getConnection()
+    public boolean openConnection()
     {
-        return getConnection(user, password, db, "127.0.0.1");
+        try
+        {
+            if( connection == null )
+            {
+                if( !loadConnection( user, password, db, server ) )
+                {
+                    return false;
+                }
+            }
+            return !connection.isClosed();
+        }
+        catch (SQLException e)
+        {
+            return false;
+        }
     }
 
-    public void closeConnection(Connection connection)
+    public void closeConnection( )
     {
-        try {
+        try
+        {
             if (connection == null)
             {
                 return;
