@@ -8,22 +8,37 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CancionJdbcImpl extends Conexion<Cancion> implements GenericJdbc<Cancion>
+public class CancionJdbcImpl extends Conexion implements GenericJdbc<Cancion>
 {
+    private static CancionJdbcImpl cancionJdbc;
+
+    private CancionJdbcImpl()
+    {
+        super();
+    }
+
+    public static CancionJdbcImpl getInstance()
+    {
+        if(cancionJdbc==null)
+        {
+            cancionJdbc = new CancionJdbcImpl();
+        }
+        return cancionJdbc;
+    }
+
     @Override
     public List<Cancion> findAll()
     {
-        Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
         Cancion cancion = null;
         List<Cancion> list = null;
-        String sql = "SELECT tbl_cancion.ID, tbl_cancion.TITULO as CANCION, tbl_cancion.DURACION, tbl_cancion.TBL_DISCO_ID, " +
-                    "tbl_cancion.*, tbl_artista.ARTISTA, tbl_disquera.DISQUERA, tbl_genero_musical.GENERO FROM tbl_cancion " +
-                "INNER JOIN tbl_cancion ON tbl_cancion.tbl_cancion_id = tbl_cancion.id " +
-                "INNER JOIN tbl_artista ON tbl_cancion.tbl_artista_id = tbl_artista.id " +
-                "INNER JOIN tbl_disquera ON tbl_cancion.tbl_disquera_id = tbl_disquera.id " +
-                "INNER JOIN tbl_genero_musical ON tbl_cancion.tbl_genero_musical_id = tbl_genero_musical.id" +
+        String sql = "SELECT tbl_cancion.*, " +
+                    "tbl_disco.*, tbl_artista.ARTISTA, tbl_disquera.DISQUERA, tbl_genero_musical.GENERO FROM tbl_cancion " +
+                "INNER JOIN tbl_disco ON tbl_cancion.tbl_disco_id = tbl_disco.id " +
+                "INNER JOIN tbl_artista ON tbl_disco.tbl_artista_id = tbl_artista.id " +
+                "INNER JOIN tbl_disquera ON tbl_disco.tbl_disquera_id = tbl_disquera.id " +
+                "INNER JOIN tbl_genero_musical ON tbl_disco.tbl_genero_musical_id = tbl_genero_musical.id" +
                 ";";
 
         try
@@ -46,30 +61,37 @@ public class CancionJdbcImpl extends Conexion<Cancion> implements GenericJdbc<Ca
             while( resultSet.next( ) )
             {
                 cancion = new Cancion();
-                cancion.setId( resultSet.getInt("ID") );
-                cancion.setTituloCancion( resultSet.getString("CANCION") );
+                cancion.setId( resultSet.getInt(1) );
+                cancion.setTituloCancion( resultSet.getString(2) );
 
                 Time duracion = resultSet.getTime("DURACION");
-                long milisegundos = duracion.getTime();
-                double minutos = (double) milisegundos/60000;
 
-                cancion.setDuracion( minutos );
+                if (duracion != null) {
+                    long milisegundos = duracion.getTime();
+                    double minutos = (double) milisegundos / 60000;
+                    cancion.setDuracion(minutos);
+                } else {
+                    cancion.setDuracion(0.0);
+                }
+
+                cancion.setDuracion(0);
+
+                Disco disco = new Disco();
+                disco.setId(resultSet.getInt(5 ));
+                disco.setTituloDisco(resultSet.getString(6));
+                disco.setPrecio(resultSet.getDouble("PRECIO"));
+                disco.setExistencias(resultSet.getInt("EXISTENCIA"));
+                disco.setDescuento(resultSet.getDouble("DESCUENTO"));
 
                 Date date = resultSet.getDate("FECHA_LANZAMIENTO");
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 String fechaFormateada = simpleDateFormat.format(date);
+                disco.setFechaLanzamiento(fechaFormateada);
 
-                Disco disco = new Disco(
-                        resultSet.getString("TITULO"),
-                        resultSet.getDouble("PRECIO"),
-                        resultSet.getInt("EXISTENCIA"),
-                        resultSet.getDouble("DESCUENTO"),
-                        fechaFormateada,
-                        resultSet.getString("IMAGEN"),
-                        new Disquera(resultSet.getString("DISQUERA")),
-                        new Artista(resultSet.getString("ARTISTA")),
-                        new Genero_Musical(resultSet.getString("GENERO_MUSICAL"))
-                );
+                disco.setImagen(resultSet.getString("IMAGEN"));
+                disco.setDisquera(new Disquera(resultSet.getString("DISQUERA")));
+                disco.setArtista(new Artista(resultSet.getString("ARTISTA")));
+                disco.setGeneroMusical(new Genero_Musical(resultSet.getString("GENERO")));
 
                 cancion.setDisco( disco );
 
@@ -236,7 +258,7 @@ public class CancionJdbcImpl extends Conexion<Cancion> implements GenericJdbc<Ca
                         resultSet.getString("IMAGEN"),
                         new Disquera(resultSet.getString("DISQUERA")),
                         new Artista(resultSet.getString("ARTISTA")),
-                        new Genero_Musical(resultSet.getString("GENERO_MUSICAL"))
+                        new Genero_Musical(resultSet.getString("GENERO"))
                 );
 
                 cancion.setDisco( disco );
@@ -251,5 +273,66 @@ public class CancionJdbcImpl extends Conexion<Cancion> implements GenericJdbc<Ca
             return null;
         }
         return cancion;
+    }
+
+    public List<Cancion> findByDiscoId(int discoId)
+    {
+        String query = "SELECT tbl_cancion.ID, tbl_cancion.TITULO as CANCION, tbl_cancion.DURACION, tbl_cancion.TBL_DISCO_ID, " +
+                "tbl_disco.*, tbl_artista.ARTISTA, tbl_disquera.DISQUERA, tbl_genero_musical.GENERO FROM tbl_cancion " +
+                "INNER JOIN tbl_disco ON tbl_cancion.tbl_disco_id = tbl_disco.id " +
+                "INNER JOIN tbl_artista ON tbl_disco.tbl_artista_id = tbl_artista.id " +
+                "INNER JOIN tbl_disquera ON tbl_disco.tbl_disquera_id = tbl_disquera.id " +
+                "INNER JOIN tbl_genero_musical ON tbl_disco.tbl_genero_musical_id = tbl_genero_musical.id " +
+                "WHERE tbl_disco.ID = ?;";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Cancion> list = new ArrayList<>();
+
+        try
+        {
+            if( !openConnection() )
+            {
+                return null;
+            }
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, discoId);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                Cancion cancion = new Cancion();
+                cancion.setId( resultSet.getInt(1) );
+                cancion.setTituloCancion( resultSet.getString("TITULO") );
+
+                Date date = resultSet.getDate("FECHA_LANZAMIENTO");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                String fechaFormateada = simpleDateFormat.format(date);
+
+                Disco disco = new Disco(
+                        resultSet.getString("TITULO"),
+                        resultSet.getDouble("PRECIO"),
+                        resultSet.getInt("EXISTENCIA"),
+                        resultSet.getDouble("DESCUENTO"),
+                        fechaFormateada,
+                        resultSet.getString("IMAGEN"),
+                        new Disquera(resultSet.getString("DISQUERA")),
+                        new Artista(resultSet.getString("ARTISTA")),
+                        new Genero_Musical(resultSet.getString("GENERO"))
+                );
+
+                cancion.setDisco( disco );
+                list.add(cancion);
+            }
+
+            preparedStatement.close();
+            closeConnection();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        return list;
     }
 }

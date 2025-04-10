@@ -121,7 +121,7 @@ public class ColoniaJdbcImpl extends Conexion implements GenericJdbc<Colonia>
     public boolean update(Colonia colonia)
     {
         PreparedStatement preparedStatement = null;
-        String query = "UPDATE tbl_colonia SET NOMBRE = ? WHERE ID = ?";
+        String query = "UPDATE tbl_colonia SET NOMBRE = ?, CP = ? WHERE ID = ?";
         int res = 0;
 
         try
@@ -134,7 +134,8 @@ public class ColoniaJdbcImpl extends Conexion implements GenericJdbc<Colonia>
             preparedStatement = connection.prepareStatement(query);
 
             preparedStatement.setString(1, colonia.getNombre());
-            preparedStatement.setInt(2, colonia.getId());
+            preparedStatement.setString( 2,colonia.getCp() );
+            preparedStatement.setInt(3, colonia.getId());
 
             res = preparedStatement.executeUpdate();
 
@@ -228,5 +229,37 @@ public class ColoniaJdbcImpl extends Conexion implements GenericJdbc<Colonia>
             return null;
         }
         return colonia;
+    }
+
+    public List<Colonia> findByMunicipioId(int municipioId)
+    {
+        String query = "SELECT ID, NOMBRE FROM tbl_colonia WHERE TBL_MUNICIPIO_ID = ?";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Colonia> list = new ArrayList<>();
+        try
+        {
+            if( !openConnection() )
+            {
+                return null;
+            }
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, municipioId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Colonia colonia = new Colonia();
+                colonia.setId(resultSet.getInt("ID"));
+                colonia.setNombre(resultSet.getString("NOMBRE")); // O el campo que uses para mostrar el nombre
+                list.add(colonia);
+            }
+
+            preparedStatement.close();
+            closeConnection();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
     }
 }

@@ -2,8 +2,11 @@ package org.floresmateo.jdbc.impl;
 
 import org.floresmateo.jdbc.Conexion;
 import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.model.Colonia;
 import org.floresmateo.model.Estado;
 import org.floresmateo.model.Municipio;
+import org.floresmateo.util.ReadUtil;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +155,31 @@ public class MunicipioJdbcImpl extends Conexion implements GenericJdbc<Municipio
         PreparedStatement preparedStatement = null;
         String query = "DELETE FROM tbl_municipio WHERE ID = ?";
         int res = 0;
+        List<Colonia> list = ColoniaJdbcImpl.getInstance().findByMunicipioId(municipio.getId());
+
+        if(!list.isEmpty())
+        {
+            System.out.println("\n> No se puede eliminar el/los municipio(s) porque tiene(n) las siguientes colonias asociadas: ");
+            for(Colonia colonia: list)
+            {
+                System.out.println("- [ID: "+colonia.getId()+"], [NOMBRE: "+colonia.getNombre()+"]");
+            }
+
+            System.out.print("> Desea eliminar también estas colonias? (S/N): ");
+            String respuesta = ReadUtil.read();
+
+            if(!respuesta.equalsIgnoreCase("S"))
+            {
+                System.out.println("> Eliminación cancelada.");
+                return false;
+            }
+
+            for(Colonia colonia: list)
+            {
+                ColoniaJdbcImpl.getInstance().delete(colonia);
+                System.out.println("> Colonias eliminadas.");
+            }
+        }
 
         try
         {
@@ -212,5 +240,37 @@ public class MunicipioJdbcImpl extends Conexion implements GenericJdbc<Municipio
             return null;
         }
         return municipio;
+    }
+
+    public List<Municipio> findByEstadoId(int estadoId)
+    {
+        String query = "SELECT ID, NOMBRE FROM tbl_municipio WHERE TBL_ESTADO_ID = ?";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Municipio> list = new ArrayList<>();
+        try
+        {
+            if( !openConnection() )
+            {
+                return null;
+            }
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, estadoId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Municipio municipio = new Municipio();
+                municipio.setId(resultSet.getInt("ID"));
+                municipio.setNombre(resultSet.getString("NOMBRE")); // O el campo que uses para mostrar el nombre
+                list.add(municipio);
+            }
+
+            preparedStatement.close();
+            closeConnection();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
     }
 }

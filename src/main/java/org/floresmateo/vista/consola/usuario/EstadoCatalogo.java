@@ -11,7 +11,6 @@ import java.util.List;
 
 public class EstadoCatalogo extends GestorCatalogos<Estado>
 {
-
     private static EstadoCatalogo estadoCatalogo;
     private static final GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
 
@@ -24,7 +23,10 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
         return estadoCatalogo;
     }
 
-    private EstadoCatalogo( ){ super(); }
+    private EstadoCatalogo( )
+    {
+        super(EstadoJdbcImpl.getInstance());
+    }
 
     @Override
     public Estado newT()
@@ -35,7 +37,6 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
     @Override
     public boolean processNewT(Estado estado)
     {
-        estado = new Estado();
         System.out.print("> Teclee el nombre del estado: ");
         estado.setNombre( ReadUtil.read() );
         estadoJdbc.save(estado);
@@ -43,50 +44,14 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
     }
 
     @Override
-    public void processEditT(Estado estado)
+    public void edit(Estado estado)
     {
-        GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
-        estado = new Estado();
-        System.out.println("\n> ID del estado siendo editado: "+estado.getId());
-        System.out.println("> Estado siendo editado: "+estado.getNombre());
+        System.out.print("> Ingrese el ID del estado a editar: ");
+        estado.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo nombre del estado: ");
         estado.setNombre( ReadUtil.read() );
-        estado.setId(1);
+
         estadoJdbc.update(estado);
-    }
-
-    @Override
-    public void print()
-    {
-        GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
-        List<Estado> list = estadoJdbc.findAll();
-
-        list.stream().forEach(System.out::println);
-    }
-
-    @Override
-    public File getFile()
-    {
-        return new File("./src/main/fileStorage/Estados.object" );
-    }
-
-    public Estado getEstadoById() {
-        if (isListaEmpty()) {
-            System.out.println("> No hay estados registrados.");
-            return null;
-        }
-        while (true) {
-            System.out.print("> Ingrese el ID del estado: ");
-            int id = ReadUtil.readInt();
-            Estado estado = list.stream()
-                    .filter(e -> e.getId().equals(id))
-                    .findFirst()
-                    .orElse(null);
-            if (estado != null) {
-                return estado;
-            }
-            System.out.println("> ID incorrecto, inténtelo nuevamente.");
-        }
     }
 
 }

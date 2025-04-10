@@ -3,6 +3,9 @@ package org.floresmateo.jdbc.impl;
 import org.floresmateo.jdbc.Conexion;
 import org.floresmateo.jdbc.GenericJdbc;
 import org.floresmateo.model.Artista;
+import org.floresmateo.model.Disco;
+import org.floresmateo.util.ReadUtil;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -141,6 +144,30 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
         PreparedStatement preparedStatement = null;
         String query = "DELETE FROM tbl_artista WHERE ID = ?";
         int res = 0;
+        List<Disco> list = DiscoJdbcImpl.getInstance().findByArtistaId(artista.getId());
+
+        if(!list.isEmpty())
+        {
+            System.out.println("\n> No se puede eliminar el artista porque tiene los siguientes discos asociados: ");
+            for(Disco disco: list)
+            {
+                System.out.println("- [ID: "+disco.getId()+"], [TITULO: "+disco.getTituloDisco()+"]");
+            }
+            System.out.print("> Desea eliminar también estos discos? (S/N): ");
+            String respuesta = ReadUtil.read();
+
+            if(!respuesta.equalsIgnoreCase("S"))
+            {
+                System.out.println("> Eliminación cancelada.");
+                return false;
+            }
+
+            for(Disco disco: list)
+            {
+                DiscoJdbcImpl.getInstance().delete(disco);
+                System.out.println("> Discos eliminados.");
+            }
+        }
 
         try
         {

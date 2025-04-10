@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public abstract class Conexion<T>
+public abstract class Conexion
 {
     public static String user = "root";
     public static String password = "n0m3l0";
@@ -67,7 +67,7 @@ public abstract class Conexion<T>
     {
         try
         {
-            if( connection == null )
+            if( connection == null || connection.isClosed() )
             {
                 if( !loadConnection( user, password, db, server ) )
                 {

@@ -3,11 +3,13 @@ package org.floresmateo.jdbc.impl;
 import org.floresmateo.jdbc.Conexion;
 import org.floresmateo.jdbc.GenericJdbc;
 import org.floresmateo.model.Estado;
+import org.floresmateo.model.Municipio;
+import org.floresmateo.util.ReadUtil;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EstadoJdbcImpl extends Conexion<Estado> implements GenericJdbc<Estado>
+public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
 {
     private static EstadoJdbcImpl estadoJdbc;
 
@@ -141,6 +143,33 @@ public class EstadoJdbcImpl extends Conexion<Estado> implements GenericJdbc<Esta
         PreparedStatement preparedStatement = null;
         String query = "DELETE FROM tbl_estado WHERE ID = ?";
         int res = 0;
+        List<Municipio> list = MunicipioJdbcImpl.getInstance().findByEstadoId(estado.getId());
+
+        if(!list.isEmpty())
+        {
+            System.out.println("\n> No se puede eliminar el estado porque tiene los siguientes municipios asociados: ");
+            for(Municipio municipio: list)
+            {
+                System.out.println("- [ID: "+municipio.getId()+"], [NOMBRE: "+municipio.getNombre()+"]");
+            }
+
+            System.out.print("> Desea eliminar también estos municipios? (S/N): ");
+            String respuesta = ReadUtil.read();
+
+            if(!respuesta.equalsIgnoreCase("S"))
+            {
+                System.out.println("> Eliminación cancelada.");
+                return false;
+            }
+
+            for(Municipio municipio: list)
+            {
+                if(MunicipioJdbcImpl.getInstance().delete(municipio))
+                {
+                    System.out.println("> Municipios eliminados.");
+                }
+            }
+        }
 
         try
         {
