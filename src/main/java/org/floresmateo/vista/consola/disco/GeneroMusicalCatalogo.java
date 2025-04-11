@@ -1,11 +1,12 @@
 package org.floresmateo.vista.consola.disco;
-
 import org.floresmateo.jdbc.GenericJdbc;
 import org.floresmateo.jdbc.impl.Genero_MusicalJdbcImpl;
+import org.floresmateo.model.Estado;
 import org.floresmateo.model.Genero_Musical;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
-import java.io.File;
+
+import java.util.List;
 
 public class GeneroMusicalCatalogo extends GestorCatalogos<Genero_Musical>
 {
@@ -43,12 +44,12 @@ public class GeneroMusicalCatalogo extends GestorCatalogos<Genero_Musical>
     @Override
     public void edit(Genero_Musical generoMusical)
     {
+        List<Genero_Musical> list = genero_musicalJdbc.findAll();
+        list.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID del género musical a editar: ");
         generoMusical.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo nombre del género musical: ");
         generoMusical.setGenero( ReadUtil.read() );
-
         genero_musicalJdbc.update(generoMusical);
     }
-
 }

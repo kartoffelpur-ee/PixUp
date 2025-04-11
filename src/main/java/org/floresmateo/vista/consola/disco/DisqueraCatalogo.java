@@ -1,11 +1,12 @@
 package org.floresmateo.vista.consola.disco;
-
 import org.floresmateo.jdbc.GenericJdbc;
 import org.floresmateo.jdbc.impl.DisqueraJdbcImpl;
 import org.floresmateo.model.Disquera;
+import org.floresmateo.model.Estado;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
-import java.io.File;
+
+import java.util.List;
 
 public class DisqueraCatalogo extends GestorCatalogos<Disquera>
 {
@@ -43,12 +44,12 @@ public class DisqueraCatalogo extends GestorCatalogos<Disquera>
     @Override
     public void edit(Disquera disquera)
     {
+        List<Disquera> list = disqueraJdbc.findAll();
+        list.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID de la disquera a editar: ");
         disquera.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo nombre de la disquera: ");
         disquera.setDisquera( ReadUtil.read() );
-
         disqueraJdbc.update(disquera);
     }
-
 }

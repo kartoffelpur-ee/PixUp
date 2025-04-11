@@ -1,5 +1,4 @@
 package org.floresmateo.vista.consola.usuario;
-
 import org.floresmateo.jdbc.GenericJdbc;
 import org.floresmateo.jdbc.impl.EstadoJdbcImpl;
 import org.floresmateo.model.Estado;
@@ -46,6 +45,8 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
     @Override
     public void edit(Estado estado)
     {
+        List<Estado> list = estadoJdbc.findAll();
+        list.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID del estado a editar: ");
         estado.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo nombre del estado: ");
@@ -53,7 +54,6 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
 
         estadoJdbc.update(estado);
     }
-
 }
 
 

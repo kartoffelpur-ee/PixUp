@@ -1,15 +1,11 @@
 package org.floresmateo.vista.consola.disco;
-
 import org.floresmateo.jdbc.GenericJdbc;
-import org.floresmateo.jdbc.impl.ArtistaJdbcImpl;
-import org.floresmateo.jdbc.impl.DiscoJdbcImpl;
-import org.floresmateo.jdbc.impl.DisqueraJdbcImpl;
-import org.floresmateo.jdbc.impl.Genero_MusicalJdbcImpl;
+import org.floresmateo.jdbc.impl.*;
 import org.floresmateo.model.*;
 import org.floresmateo.util.ReadUtil;
-import org.floresmateo.vista.Menu;
 import org.floresmateo.vista.consola.GestorCatalogos;
-import java.io.File;
+
+import java.util.List;
 
 public class DiscoCatalogo extends GestorCatalogos<Disco>
 {
@@ -50,16 +46,25 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
         System.out.print("> Ingrese la imagen: ");
         disco.setImagen( ReadUtil.read() );
 
+        DisqueraJdbcImpl disqueraJdbc = DisqueraJdbcImpl.getInstance();
+        List<Disquera> list = disqueraJdbc.findAll();
+        list.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID de la disquera de su distribución: ");
         Disquera disquera = DisqueraJdbcImpl.getInstance().findById( ReadUtil.readInt() );
         if(disquera==null) { return false; }
         else { disco.setDisquera( disquera ); }
 
+        ArtistaJdbcImpl artistaJdbc = ArtistaJdbcImpl.getInstance();
+        List<Artista> list2 = artistaJdbc.findAll();
+        list2.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID del artista al que pertenece: ");
         Artista artista = ArtistaJdbcImpl.getInstance().findById( ReadUtil.readInt() );
         if(artista==null) { return false; }
         else { disco.setArtista(artista); }
 
+        Genero_MusicalJdbcImpl generoMusicalJdbc = Genero_MusicalJdbcImpl.getInstance();
+        List<Genero_Musical> list3 = generoMusicalJdbc.findAll();
+        list3.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID del género musical al que pertenece: ");
         Genero_Musical generoMusical = Genero_MusicalJdbcImpl.getInstance().findById( ReadUtil.readInt() );
         if(generoMusical==null) { return false; }
@@ -71,6 +76,8 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
 
     @Override
     public void edit(Disco disco) {
+        List<Disco> list = discoJdbc.findAll();
+        list.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID del disco a editar: ");
         disco.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo título del disco: ");
@@ -85,3 +92,4 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
         discoJdbc.update(disco);
     }
 }
+

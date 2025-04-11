@@ -1,5 +1,4 @@
 package org.floresmateo.vista.consola.disco;
-
 import org.floresmateo.jdbc.GenericJdbc;
 import org.floresmateo.jdbc.impl.ArtistaJdbcImpl;
 import org.floresmateo.jdbc.impl.EstadoJdbcImpl;
@@ -8,6 +7,7 @@ import org.floresmateo.model.Estado;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
 import java.io.File;
+import java.util.List;
 
 public class ArtistaCatalogo extends GestorCatalogos<Artista>
 {
@@ -46,11 +46,12 @@ public class ArtistaCatalogo extends GestorCatalogos<Artista>
     @Override
     public void edit(Artista artista)
     {
+        List<Artista> list = artistaJdbc.findAll();
+        list.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID del estado a editar: ");
         artista.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo nombre del estado: ");
         artista.setArtista( ReadUtil.read() );
-
         artistaJdbc.update(artista);
     }
 
