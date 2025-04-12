@@ -1,16 +1,15 @@
 package org.floresmateo.vista.consola.usuario;
+
 import org.floresmateo.sql.GenericSql;
-import org.floresmateo.sql.jdbcimpl.EstadoSqlImpl;
+import org.floresmateo.sql.hibernateimpl.EstadoHiberImpl;
 import org.floresmateo.model.Estado;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
 
-import java.util.List;
-
 public class EstadoCatalogo extends GestorCatalogos<Estado>
 {
     private static EstadoCatalogo estadoCatalogo;
-    private static final GenericSql<Estado> estadoJdbc = EstadoSqlImpl.getInstance();
+    private static final GenericSql<Estado> estadoSql = EstadoHiberImpl.getInstance();
 
     public static EstadoCatalogo getInstance( )
     {
@@ -23,7 +22,7 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
 
     private EstadoCatalogo( )
     {
-        super(EstadoSqlImpl.getInstance());
+        super(EstadoHiberImpl.getInstance());
     }
 
     @Override
@@ -36,22 +35,19 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
     public boolean processNewT(Estado estado)
     {
         System.out.print("> Teclee el nombre del estado: ");
-        estado.setNombre( ReadUtil.read() );
-        estadoJdbc.save(estado);
+        estado.setEstado( ReadUtil.read() );
+        estadoSql.save(estado);
         return true;
     }
 
     @Override
-    public void edit(Estado estado)
+    public boolean processEditT(Estado estado)
     {
-        List<Estado> list = estadoJdbc.findAll();
-        list.stream().forEach(System.out::println);
-        System.out.print("> Ingrese el ID del estado a editar: ");
-        estado.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo nombre del estado: ");
-        estado.setNombre( ReadUtil.read() );
+        estado.setEstado( ReadUtil.read() );
 
-        estadoJdbc.update(estado);
+        estadoSql.update(estado);
+        return true;
     }
 }
 

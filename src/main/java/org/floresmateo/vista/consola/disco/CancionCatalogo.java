@@ -1,21 +1,23 @@
 package org.floresmateo.vista.consola.disco;
+
 import org.floresmateo.sql.GenericSql;
-import org.floresmateo.sql.jdbcimpl.CancionSqlImpl;
-import org.floresmateo.sql.jdbcimpl.DiscoSqlImpl;
 import org.floresmateo.model.*;
+import org.floresmateo.sql.hibernateimpl.CancionHiberImpl;
+import org.floresmateo.sql.hibernateimpl.DiscoHiberImpl;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
-
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 
 public class CancionCatalogo extends GestorCatalogos<Cancion>
 {
     private static CancionCatalogo cancionCatalogo;
-    private static final GenericSql<Cancion> cancionJdbc = CancionSqlImpl.getInstance();
+    private static final GenericSql<Cancion> cancionSql = CancionHiberImpl.getInstance();
 
     private CancionCatalogo()
     {
-        super(CancionSqlImpl.getInstance());
+        super(CancionHiberImpl.getInstance());
     }
 
     public static CancionCatalogo getInstance()
@@ -37,29 +39,54 @@ public class CancionCatalogo extends GestorCatalogos<Cancion>
     {
         System.out.print("> Ingrese el título de la canción: ");
         cancion.setTituloCancion( ReadUtil.read() );
-        System.out.print("> Ingrese la duración de la canción en minutos: ");
-        cancion.setDuracion( ReadUtil.readDouble() );
+        System.out.print("> Ingrese la duración de la canción en formato MM:SS: ");
+        String duracionStr = ReadUtil.read();
+
+        try
+        {
+            String[] partes = duracionStr.split(":"); // Separa los minutos y los segundos
+            int minutos = Integer.parseInt(partes[0]);
+            int segundos = Integer.parseInt(partes[1]);
+
+            LocalTime duracion = LocalTime.of(0, minutos, segundos); // HH:MM:SS
+            cancion.setDuracion(duracion);
+        }
+        catch (Exception e)
+        {
+            System.out.println("> Duración inválida.");
+        }
+
+        DiscoHiberImpl discoHiber = DiscoHiberImpl.getInstance();
+        List<Disco> discoList = discoHiber.findAll();
+        discoList.forEach(System.out::println);
 
         System.out.print("> Ingrese el ID del disco al que pertenece: ");
-        Disco disco = DiscoSqlImpl.getInstance().findById( ReadUtil.readInt() );
-        if(disco==null){ return false; }
-        else { cancion.setDisco( disco ); }
+        Disco disco = discoHiber.findById( ReadUtil.readInt() );
+        if(disco==null)
+        {
+            System.out.println("> No encontrado.");
+            return false;
+        }
+        else
+        {
+            cancion.setDisco( disco );
+        }
 
-        cancionJdbc.save(cancion);
+        cancionSql.save(cancion);
         return true;
     }
 
     @Override
-    public void edit(Cancion cancion)
+    public boolean processEditT(Cancion cancion)
     {
-        List<Cancion> list = cancionJdbc.findAll();
-        list.stream().forEach(System.out::println);
-        System.out.print("> Ingrese el ID de la canción a editar: ");
-        cancion.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo título de la canción: ");
         cancion.setTituloCancion( ReadUtil.read() );
 
-        cancionJdbc.update(cancion);
+        System.out.print("> Ingrese la duración de la canción en formato HH:MM:SS: ");
+        cancion.setTituloCancion( ReadUtil.read() );
+
+        cancionSql.update(cancion);
+        return true;
     }
 }
 

@@ -1,35 +1,36 @@
 package org.floresmateo.sql.hibernateimpl;
 
 import org.floresmateo.hibernate.HibernateUtil;
-import org.floresmateo.model.Colonia;
+import org.floresmateo.model.Genero_Musical;
+import org.floresmateo.model.Genero_Musical;
 import org.floresmateo.sql.GenericSql;
 import org.hibernate.Session;
 
 import java.util.List;
 
-public class ColoniaHiberImpl implements GenericSql<Colonia>
+public class Genero_MusicalHiberImpl implements GenericSql<Genero_Musical>
 {
-    private static ColoniaHiberImpl coloniaHiber;
+    private static Genero_MusicalHiberImpl generoMusicalHiber;
 
-    private ColoniaHiberImpl()
+    private Genero_MusicalHiberImpl()
     {
     }
 
-    public static ColoniaHiberImpl getInstance()
+    public static Genero_MusicalHiberImpl getInstance()
     {
-        if(coloniaHiber==null)
+        if(generoMusicalHiber==null)
         {
-            coloniaHiber = new ColoniaHiberImpl();
+            generoMusicalHiber = new Genero_MusicalHiberImpl();
         }
-        return coloniaHiber;
+        return generoMusicalHiber;
     }
 
     @Override
-    public List<Colonia> findAll()
+    public List<Genero_Musical> findAll()
     {
         Session session = HibernateUtil.getSession();
-        List<Colonia> list = session
-                .createQuery("FROM Colonia", Colonia.class)
+        List<Genero_Musical> list = session
+                .createQuery("FROM Genero_Musical", Genero_Musical.class)
                 .getResultList();
 
         session.close();
@@ -37,12 +38,12 @@ public class ColoniaHiberImpl implements GenericSql<Colonia>
     }
 
     @Override
-    public boolean save(Colonia colonia)
+    public boolean save(Genero_Musical generoMusical)
     {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.persist(colonia);
+        session.persist(generoMusical);
         session.getTransaction().commit();
 
         session.close();
@@ -50,12 +51,12 @@ public class ColoniaHiberImpl implements GenericSql<Colonia>
     }
 
     @Override
-    public boolean update(Colonia colonia)
+    public boolean update(Genero_Musical generoMusical)
     {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.merge(colonia);
+        session.merge(generoMusical);
         session.getTransaction().commit();
 
         session.close();
@@ -63,12 +64,12 @@ public class ColoniaHiberImpl implements GenericSql<Colonia>
     }
 
     @Override
-    public boolean delete(Colonia colonia)
+    public boolean delete(Genero_Musical generoMusical)
     {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.remove(colonia);
+        session.remove(generoMusical);
         session.getTransaction().commit();
 
         session.close();
@@ -76,13 +77,13 @@ public class ColoniaHiberImpl implements GenericSql<Colonia>
     }
 
     @Override
-    public Colonia findById(Integer id)
+    public Genero_Musical findById(Integer id)
     {
         Session session = HibernateUtil.getSession();
-        Colonia colonia = session
-                .get( Colonia.class, id );
+        Genero_Musical generoMusical = session
+                .get( Genero_Musical.class, id );
 
         session.close();
-        return colonia;
+        return generoMusical;
     }
 }

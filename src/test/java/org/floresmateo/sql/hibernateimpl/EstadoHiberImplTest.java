@@ -35,7 +35,7 @@ class EstadoHiberImplTest {
         for(int i = 1; i<4; i++ )
         {
             Estado estado = new Estado();
-            estado.setNombre(" Prueba ");
+            estado.setEstado(" Prueba ");
 
             assertNotNull( estado );
             estadoHiber.save(estado);

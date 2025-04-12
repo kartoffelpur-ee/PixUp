@@ -33,7 +33,7 @@ class ColoniaJdbcImplTest
     {
         GenericSql<Colonia> coloniaJdbc = ColoniaSqlImpl.getInstance();
         Colonia colonia = new Colonia();
-        colonia.setNombre("Colonia 3");
+        colonia.setColonia("Colonia 3");
         colonia.setCp("23124");
 
         Municipio municipio = new Municipio();
@@ -48,7 +48,7 @@ class ColoniaJdbcImplTest
     {
         GenericSql<Colonia> coloniaJdbc = ColoniaSqlImpl.getInstance();
         Colonia colonia = new Colonia();
-        colonia.setNombre("Colonia3");
+        colonia.setColonia("Colonia3");
         colonia.setId(3);
 
         assertTrue(coloniaJdbc.update(colonia));
@@ -73,6 +73,6 @@ class ColoniaJdbcImplTest
         assertNotNull(colonia);
         assertEquals(2, colonia.getId());
 
-        System.out.println(colonia.getNombre());
+        System.out.println(colonia.getColonia());
     }
 }

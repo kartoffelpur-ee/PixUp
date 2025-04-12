@@ -1,7 +1,7 @@
 package org.floresmateo.vista.consola.disco;
 import org.floresmateo.sql.GenericSql;
-import org.floresmateo.sql.jdbcimpl.Genero_MusicalSqlImpl;
 import org.floresmateo.model.Genero_Musical;
+import org.floresmateo.sql.hibernateimpl.Genero_MusicalHiberImpl;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
 
@@ -10,11 +10,11 @@ import java.util.List;
 public class GeneroMusicalCatalogo extends GestorCatalogos<Genero_Musical>
 {
     private static GeneroMusicalCatalogo generoMusicalCatalogo;
-    private static final GenericSql<Genero_Musical> genero_musicalJdbc = Genero_MusicalSqlImpl.getInstance();
+    private static final GenericSql<Genero_Musical> genero_MusicalSql = Genero_MusicalHiberImpl.getInstance();
 
     private GeneroMusicalCatalogo()
     {
-        super(Genero_MusicalSqlImpl.getInstance());
+        super(Genero_MusicalHiberImpl.getInstance());
     }
 
     public static GeneroMusicalCatalogo getInstance()
@@ -36,19 +36,17 @@ public class GeneroMusicalCatalogo extends GestorCatalogos<Genero_Musical>
     {
         System.out.print("> Ingrese el género musical: ");
         generoMusical.setGenero( ReadUtil.read() );
-        genero_musicalJdbc.save(generoMusical);
+        genero_MusicalSql.save(generoMusical);
         return true;
     }
 
     @Override
-    public void edit(Genero_Musical generoMusical)
+    public boolean processEditT(Genero_Musical generoMusical)
     {
-        List<Genero_Musical> list = genero_musicalJdbc.findAll();
-        list.stream().forEach(System.out::println);
-        System.out.print("> Ingrese el ID del género musical a editar: ");
-        generoMusical.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo nombre del género musical: ");
         generoMusical.setGenero( ReadUtil.read() );
-        genero_musicalJdbc.update(generoMusical);
+
+        genero_MusicalSql.update(generoMusical);
+        return true;
     }
 }

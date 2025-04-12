@@ -30,7 +30,7 @@ class MunicipioHiberImplTest {
         for(int i = 1; i<=5; i++ )
         {
             Municipio municipio = new Municipio();
-            municipio.setNombre(" Prueba ");
+            municipio.setMunicipio(" Prueba ");
 
             Estado estado = estadoHiber.findById(i);
 

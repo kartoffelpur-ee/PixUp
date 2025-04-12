@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -14,7 +14,7 @@ import lombok.*;
 public class Colonia extends Catalogo
 {
     @Column(name="COLONIA", nullable = false)
-    private String nombre;
+    private String colonia;
 
     @Column(name="CP", nullable = false)
     private String cp;

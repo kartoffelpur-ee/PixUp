@@ -1,20 +1,24 @@
 package org.floresmateo.vista.consola.disco;
+
 import org.floresmateo.sql.GenericSql;
-import org.floresmateo.sql.jdbcimpl.*;
+import org.floresmateo.sql.hibernateimpl.ArtistaHiberImpl;
+import org.floresmateo.sql.hibernateimpl.DiscoHiberImpl;
 import org.floresmateo.model.*;
+import org.floresmateo.sql.hibernateimpl.DisqueraHiberImpl;
+import org.floresmateo.sql.hibernateimpl.Genero_MusicalHiberImpl;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
-
+import java.time.LocalDate;
 import java.util.List;
 
 public class DiscoCatalogo extends GestorCatalogos<Disco>
 {
     private static DiscoCatalogo discoCatalogo;
-    private static final GenericSql<Disco> discoJdbc = DiscoSqlImpl.getInstance();
+    private static final GenericSql<Disco> discoSql = DiscoHiberImpl.getInstance();
 
     private DiscoCatalogo()
     {
-        super(DiscoSqlImpl.getInstance());
+        super(DiscoHiberImpl.getInstance());
     }
 
     public static DiscoCatalogo getInstance()
@@ -41,45 +45,70 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
         disco.setExistencias( ReadUtil.readInt() );
         System.out.print("> Ingrese el descuento actual (si tiene): ");
         disco.setDescuento( ReadUtil.readDouble() );
+
         System.out.print("> Ingrese la fecha de lanzamiento, en formato 'YYYY-MM-DD': ");
-        disco.setFechaLanzamiento( ReadUtil.read() );
+        String fechaStr = ReadUtil.read();
+        LocalDate fecha = LocalDate.parse(fechaStr);
+        disco.setFechaLanzamiento( fecha );
+
         System.out.print("> Ingrese la imagen: ");
         disco.setImagen( ReadUtil.read() );
 
-        DisqueraSqlImpl disqueraJdbc = DisqueraSqlImpl.getInstance();
-        List<Disquera> list = disqueraJdbc.findAll();
-        list.stream().forEach(System.out::println);
+        DisqueraHiberImpl disqueraSql = DisqueraHiberImpl.getInstance();
+        List<Disquera> disqueraList = disqueraSql.findAll();
+        disqueraList.forEach(System.out::println);
+
         System.out.print("> Ingrese el ID de la disquera de su distribución: ");
-        Disquera disquera = DisqueraSqlImpl.getInstance().findById( ReadUtil.readInt() );
-        if(disquera==null) { return false; }
-        else { disco.setDisquera( disquera ); }
+        Disquera disquera = disqueraSql.findById( ReadUtil.readInt() );
+        if(disquera==null)
+        {
+            System.out.println("> No encontrado.");
+            return false;
+        }
+        else
+        {
+            disco.setDisquera( disquera );
+        }
 
-        ArtistaSqlImpl artistaJdbc = ArtistaSqlImpl.getInstance();
-        List<Artista> list2 = artistaJdbc.findAll();
-        list2.stream().forEach(System.out::println);
+        ArtistaHiberImpl artistaSql = ArtistaHiberImpl.getInstance();
+        List<Artista> artistaList = artistaSql.findAll();
+        artistaList.forEach(System.out::println);
+
         System.out.print("> Ingrese el ID del artista al que pertenece: ");
-        Artista artista = ArtistaSqlImpl.getInstance().findById( ReadUtil.readInt() );
-        if(artista==null) { return false; }
-        else { disco.setArtista(artista); }
+        Artista artista = artistaSql.findById( ReadUtil.readInt() );
+        if(artista==null)
+        {
+            System.out.println("> No encontrado.");
+            return false;
+        }
+        else
+        {
+            disco.setArtista(artista);
+        }
 
-        Genero_MusicalSqlImpl generoMusicalJdbc = Genero_MusicalSqlImpl.getInstance();
-        List<Genero_Musical> list3 = generoMusicalJdbc.findAll();
-        list3.stream().forEach(System.out::println);
+        Genero_MusicalHiberImpl generoMusicalSql = Genero_MusicalHiberImpl.getInstance();
+        List<Genero_Musical> generoMusicalList = generoMusicalSql.findAll();
+        generoMusicalList.forEach(System.out::println);
+
         System.out.print("> Ingrese el ID del género musical al que pertenece: ");
-        Genero_Musical generoMusical = Genero_MusicalSqlImpl.getInstance().findById( ReadUtil.readInt() );
-        if(generoMusical==null) { return false; }
-        else { disco.setGeneroMusical( generoMusical ); }
+        Genero_Musical generoMusical = generoMusicalSql.findById( ReadUtil.readInt() );
+        if(generoMusical==null)
+        {
+            System.out.println("> No encontrado.");
+            return false;
+        }
+        else
+        {
+            disco.setGeneroMusical( generoMusical );
+        }
 
-        discoJdbc.save(disco);
+        discoSql.save(disco);
         return true;
     }
 
     @Override
-    public void edit(Disco disco) {
-        List<Disco> list = discoJdbc.findAll();
-        list.stream().forEach(System.out::println);
-        System.out.print("> Ingrese el ID del disco a editar: ");
-        disco.setId( ReadUtil.readInt() );
+    public boolean processEditT(Disco disco)
+    {
         System.out.print("> Ingrese el nuevo título del disco: ");
         disco.setTituloDisco( ReadUtil.read() );
         System.out.print("> Ingrese el nuevo precio de venta: ");
@@ -89,7 +118,8 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
         System.out.print("> Ingrese el nuevo descuento actual (si tiene): ");
         disco.setDescuento( ReadUtil.readDouble() );
 
-        discoJdbc.update(disco);
+        discoSql.update(disco);
+        return true;
     }
 }
 

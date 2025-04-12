@@ -1,35 +1,35 @@
 package org.floresmateo.sql.hibernateimpl;
 
 import org.floresmateo.hibernate.HibernateUtil;
-import org.floresmateo.model.Colonia;
+import org.floresmateo.model.Disco;
 import org.floresmateo.sql.GenericSql;
 import org.hibernate.Session;
 
 import java.util.List;
 
-public class ColoniaHiberImpl implements GenericSql<Colonia>
+public class DiscoHiberImpl implements GenericSql<Disco>
 {
-    private static ColoniaHiberImpl coloniaHiber;
+    private static DiscoHiberImpl discoHiber;
 
-    private ColoniaHiberImpl()
+    private DiscoHiberImpl()
     {
     }
 
-    public static ColoniaHiberImpl getInstance()
+    public static DiscoHiberImpl getInstance()
     {
-        if(coloniaHiber==null)
+        if(discoHiber==null)
         {
-            coloniaHiber = new ColoniaHiberImpl();
+            discoHiber = new DiscoHiberImpl();
         }
-        return coloniaHiber;
+        return discoHiber;
     }
 
     @Override
-    public List<Colonia> findAll()
+    public List<Disco> findAll()
     {
         Session session = HibernateUtil.getSession();
-        List<Colonia> list = session
-                .createQuery("FROM Colonia", Colonia.class)
+        List<Disco> list = session
+                .createQuery("FROM Disco", Disco.class)
                 .getResultList();
 
         session.close();
@@ -37,12 +37,12 @@ public class ColoniaHiberImpl implements GenericSql<Colonia>
     }
 
     @Override
-    public boolean save(Colonia colonia)
+    public boolean save(Disco disco)
     {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.persist(colonia);
+        session.persist(disco);
         session.getTransaction().commit();
 
         session.close();
@@ -50,12 +50,12 @@ public class ColoniaHiberImpl implements GenericSql<Colonia>
     }
 
     @Override
-    public boolean update(Colonia colonia)
+    public boolean update(Disco disco)
     {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.merge(colonia);
+        session.merge(disco);
         session.getTransaction().commit();
 
         session.close();
@@ -63,12 +63,12 @@ public class ColoniaHiberImpl implements GenericSql<Colonia>
     }
 
     @Override
-    public boolean delete(Colonia colonia)
+    public boolean delete(Disco disco)
     {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.remove(colonia);
+        session.remove(disco);
         session.getTransaction().commit();
 
         session.close();
@@ -76,13 +76,13 @@ public class ColoniaHiberImpl implements GenericSql<Colonia>
     }
 
     @Override
-    public Colonia findById(Integer id)
+    public Disco findById(Integer id)
     {
         Session session = HibernateUtil.getSession();
-        Colonia colonia = session
-                .get( Colonia.class, id );
+        Disco disco = session
+                .get( Disco.class, id );
 
         session.close();
-        return colonia;
+        return disco;
     }
 }

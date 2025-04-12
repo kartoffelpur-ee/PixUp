@@ -33,7 +33,7 @@ class MunicipioJdbcImplTest {
     {
         GenericSql<Municipio> municipioJdbc = MunicipioSqlImpl.getInstance();
         Municipio municipio = new Municipio();
-        municipio.setNombre("Reynosa");
+        municipio.setMunicipio("Reynosa");
 
         Estado estado = new Estado();
         estado.setId(1);
@@ -46,7 +46,7 @@ class MunicipioJdbcImplTest {
     {
         GenericSql<Municipio> municipioJdbc = MunicipioSqlImpl.getInstance();
         Municipio municipio = new Municipio();
-        municipio.setNombre("Reinosa");
+        municipio.setMunicipio("Reinosa");
         municipio.setId(5);
         assertTrue(municipioJdbc.update(municipio));
     }
@@ -70,6 +70,6 @@ class MunicipioJdbcImplTest {
         assertNotNull(municipio);
         assertEquals(4, municipio.getId());
 
-        System.out.println(municipio.getNombre());
+        System.out.println(municipio.getMunicipio());
     }
 }

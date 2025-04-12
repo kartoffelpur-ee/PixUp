@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class Municipio extends Catalogo implements Serializable
 {
     @Column( name = "MUNICIPIO", nullable = false )
-    private String nombre;
+    private String municipio;
 
     @ManyToOne
     @JoinColumn( name = "TBL_ESTADO_ID" )

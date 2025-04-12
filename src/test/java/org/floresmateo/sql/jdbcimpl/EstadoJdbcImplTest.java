@@ -33,7 +33,7 @@ class EstadoJdbcImplTest
     {
         GenericSql<Estado> estadoJdbc = EstadoSqlImpl.getInstance();
         Estado estado = new Estado();
-        estado.setNombre("CDMX");
+        estado.setEstado("CDMX");
         assertTrue(estadoJdbc.save(estado));
     }
 
@@ -42,7 +42,7 @@ class EstadoJdbcImplTest
     {
         GenericSql<Estado> estadoJdbc = EstadoSqlImpl.getInstance();
         Estado estado = new Estado();
-        estado.setNombre("Ciudad de mejico");
+        estado.setEstado("Ciudad de mejico");
         estado.setId(1);
         assertTrue(estadoJdbc.update(estado));
     }

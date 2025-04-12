@@ -1,10 +1,7 @@
 package org.floresmateo.model;
 
 import org.floresmateo.sql.jdbcimpl.EstadoSqlImpl;
-import org.floresmateo.util.ReadUtil;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +13,7 @@ class MunicipioTest {
         Estado estado = new Estado();
         Municipio municipio = new Municipio();
 
-        municipio.setNombre( "Prueba" );
+        municipio.setMunicipio( "Prueba" );
         estado = EstadoSqlImpl.getInstance().findById( 15 );
         if(estado!=null)
         {

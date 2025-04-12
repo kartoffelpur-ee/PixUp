@@ -1,7 +1,8 @@
 package org.floresmateo.vista.consola.disco;
+
 import org.floresmateo.sql.GenericSql;
-import org.floresmateo.sql.jdbcimpl.ArtistaSqlImpl;
 import org.floresmateo.model.Artista;
+import org.floresmateo.sql.hibernateimpl.ArtistaHiberImpl;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
 
@@ -10,11 +11,11 @@ import java.util.List;
 public class ArtistaCatalogo extends GestorCatalogos<Artista>
 {
     private static ArtistaCatalogo artistaCatalogo;
-    private static final GenericSql<Artista> artistaJdbc = ArtistaSqlImpl.getInstance();
+    private static final GenericSql<Artista> artistaSql = ArtistaHiberImpl.getInstance();
 
     private ArtistaCatalogo()
     {
-        super(ArtistaSqlImpl.getInstance());
+        super(ArtistaHiberImpl.getInstance());
     }
 
     public static ArtistaCatalogo getInstance()
@@ -37,20 +38,18 @@ public class ArtistaCatalogo extends GestorCatalogos<Artista>
     {
         System.out.print("> Ingrese el nombre del artista: ");
         artista.setArtista( ReadUtil.read() );
-        artistaJdbc.save(artista);
+        artistaSql.save(artista);
         return true;
     }
 
     @Override
-    public void edit(Artista artista)
+    public boolean processEditT(Artista artista)
     {
-        List<Artista> list = artistaJdbc.findAll();
-        list.stream().forEach(System.out::println);
-        System.out.print("> Ingrese el ID del estado a editar: ");
-        artista.setId( ReadUtil.readInt() );
-        System.out.print("> Ingrese el nuevo nombre del estado: ");
+        System.out.print("> Ingrese el nuevo nombre del artista: ");
         artista.setArtista( ReadUtil.read() );
-        artistaJdbc.update(artista);
+
+        artistaSql.update(artista);
+        return true;
     }
 
 }

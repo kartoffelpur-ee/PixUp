@@ -1,12 +1,10 @@
 package org.floresmateo.vista.consola;
-import org.floresmateo.sql.Conexion;
 import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.Catalogo;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.LeerAcciones;
 import org.floresmateo.vista.Menu;
 
-import java.sql.*;
 import java.util.List;
 
 public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
@@ -19,13 +17,11 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
     public GestorCatalogos(GenericSql<T> genericSql)
     {
         this.genericSql = genericSql;
-        Conexion conexion = new Conexion() {};
-        Connection connection = conexion.getConnection();
     }
 
     public abstract T newT();
     public abstract boolean processNewT(T t);
-    public abstract void edit(T t);
+    public abstract boolean processEditT(T t);
 
     public void print()
     {
@@ -34,7 +30,7 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
         {
             System.out.println("> No hay elementos registrados.");
         }
-        list.stream().forEach(System.out::println);
+        list.forEach(System.out::println);
     }
 
     public void add( )
@@ -43,6 +39,44 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
         if(processNewT( t ))
         {
             System.out.println("> Elemento añadido con éxito.");
+        }
+    }
+
+    public void edit( )
+    {
+        List<T> list = genericSql.findAll();
+        if( list.isEmpty( ) )
+        {
+            System.out.println( ">  No hay elementos para editar." );
+            return;
+        }
+        flag2 = true;
+        while ( flag2 )
+        {
+            list.forEach(System.out::println);
+            System.out.print( "> Ingrese el ID del elemento a editar: " );
+
+            t = list.stream()
+                    .filter( e -> e.getId().equals( ReadUtil.readInt( ) ) )
+                    .findFirst()
+                    .orElse( null );
+
+            if( t==null )
+            {
+                System.out.println( "> No se encontró el elemento." );
+                System.out.print( "> Deseas volver a intentarlo? s/n: ");
+                String respuesta = ReadUtil.read();
+
+                flag2 = respuesta.equalsIgnoreCase("S");
+            }
+            else
+            {
+                if(processEditT(t))
+                {
+                    System.out.println( "> Elemento editado con éxito." );
+                }
+                flag2 = false;
+            }
         }
     }
 
@@ -57,12 +91,21 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
         flag2 = true;
         while ( flag2 )
         {
-            list.stream().forEach(System.out::println);
+            list.forEach(System.out::println);
             System.out.print( "> Ingrese el ID del elemento a eliminar: " );
-            t = list.stream().filter( e -> e.getId().equals( ReadUtil.readInt( ) ) ).findFirst().orElse( null );
+
+            t = list.stream()
+                    .filter( e -> e.getId().equals( ReadUtil.readInt( ) ) )
+                    .findFirst()
+                    .orElse( null );
+
             if( t==null )
             {
-                System.out.println( "> ID incorrecto, inténtelo nuevamente." );
+                System.out.println( "> No se encontró el elemento." );
+                System.out.print( "> Deseas volver a intentarlo? s/n: ");
+                String respuesta = ReadUtil.read();
+
+                flag2 = respuesta.equalsIgnoreCase("S");
             }
             else
             {
@@ -128,7 +171,7 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
                 remove( );
                 break;
             case 3:
-                edit( t );
+                edit( );
                 break;
             case 4:
                 print( );
