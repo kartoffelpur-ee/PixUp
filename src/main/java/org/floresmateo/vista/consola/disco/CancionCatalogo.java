@@ -1,7 +1,7 @@
 package org.floresmateo.vista.consola.disco;
-import org.floresmateo.sql.GenericJdbc;
-import org.floresmateo.sql.jdbcimpl.CancionJdbcImpl;
-import org.floresmateo.sql.jdbcimpl.DiscoJdbcImpl;
+import org.floresmateo.sql.GenericSql;
+import org.floresmateo.sql.jdbcimpl.CancionSqlImpl;
+import org.floresmateo.sql.jdbcimpl.DiscoSqlImpl;
 import org.floresmateo.model.*;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
@@ -11,11 +11,11 @@ import java.util.List;
 public class CancionCatalogo extends GestorCatalogos<Cancion>
 {
     private static CancionCatalogo cancionCatalogo;
-    private static final GenericJdbc<Cancion> cancionJdbc = CancionJdbcImpl.getInstance();
+    private static final GenericSql<Cancion> cancionJdbc = CancionSqlImpl.getInstance();
 
     private CancionCatalogo()
     {
-        super(CancionJdbcImpl.getInstance());
+        super(CancionSqlImpl.getInstance());
     }
 
     public static CancionCatalogo getInstance()
@@ -41,7 +41,7 @@ public class CancionCatalogo extends GestorCatalogos<Cancion>
         cancion.setDuracion( ReadUtil.readDouble() );
 
         System.out.print("> Ingrese el ID del disco al que pertenece: ");
-        Disco disco = DiscoJdbcImpl.getInstance().findById( ReadUtil.readInt() );
+        Disco disco = DiscoSqlImpl.getInstance().findById( ReadUtil.readInt() );
         if(disco==null){ return false; }
         else { cancion.setDisco( disco ); }
 

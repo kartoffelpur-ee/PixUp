@@ -2,7 +2,7 @@ package org.floresmateo.sql;
 
 import java.util.List;
 
-public interface GenericJdbc<T>
+public interface GenericSql<T>
 {
     List<T> findAll();
     boolean save(T t);

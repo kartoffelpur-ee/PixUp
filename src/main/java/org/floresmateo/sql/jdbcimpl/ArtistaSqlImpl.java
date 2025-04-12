@@ -1,40 +1,41 @@
 package org.floresmateo.sql.jdbcimpl;
 
 import org.floresmateo.sql.Conexion;
-import org.floresmateo.sql.GenericJdbc;
-import org.floresmateo.model.Estado;
-import org.floresmateo.model.Municipio;
+import org.floresmateo.sql.GenericSql;
+import org.floresmateo.model.Artista;
+import org.floresmateo.model.Disco;
 import org.floresmateo.util.ReadUtil;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
+public class ArtistaSqlImpl extends Conexion implements GenericSql<Artista>
 {
-    private static EstadoJdbcImpl estadoJdbc;
+    private static ArtistaSqlImpl artistaJdbc;
 
-    private EstadoJdbcImpl()
+    private ArtistaSqlImpl()
     {
         super();
     }
 
-    public static EstadoJdbcImpl getInstance()
+    public static ArtistaSqlImpl getInstance()
     {
-        if(estadoJdbc==null)
+        if(artistaJdbc==null)
         {
-            estadoJdbc = new EstadoJdbcImpl();
+            artistaJdbc = new ArtistaSqlImpl();
         }
-        return estadoJdbc;
+        return artistaJdbc;
     }
 
     @Override
-    public List<Estado> findAll()
+    public List<Artista> findAll()
     {
         Statement statement = null;
         ResultSet resultSet = null;
-        List<Estado> list = null;
-        Estado estado = null;
-        String sql ="SELECT * FROM tbl_estado";
+        List<Artista> list = null;
+        Artista artista = null;
+        String sql ="SELECT * FROM tbl_artista";
 
         try
         {
@@ -55,10 +56,10 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
 
             while( resultSet.next( ) )
             {
-                estado = new Estado();
-                estado.setId( resultSet.getInt( "ID" ) );
-                estado.setNombre( resultSet.getString( "NOMBRE" ) );
-                list.add( estado );
+                artista = new Artista();
+                artista.setId( resultSet.getInt( "ID" ) );
+                artista.setArtista( resultSet.getString( "ARTISTA" ) );
+                list.add( artista );
             }
 
             resultSet.close( );
@@ -73,10 +74,10 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
     }
 
     @Override
-    public boolean save(Estado estado)
+    public boolean save(Artista artista)
     {
         PreparedStatement preparedStatement = null;
-        String query = "INSERT INTO tbl_estado (NOMBRE) VALUES ( ? )";
+        String query = "INSERT INTO tbl_artista (ARTISTA) VALUES ( ? )";
         int res = 0;
 
         try
@@ -87,7 +88,7 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
                 return false;
             }
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, estado.getNombre());
+            preparedStatement.setString(1, artista.getArtista());
 
             res = preparedStatement.executeUpdate();
 
@@ -104,10 +105,10 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
     }
 
     @Override
-    public boolean update(Estado estado)
+    public boolean update(Artista artista)
     {
         PreparedStatement preparedStatement = null;
-        String query = "UPDATE tbl_estado SET NOMBRE = ? WHERE ID = ?";
+        String query = "UPDATE tbl_artista SET ARTISTA = ? WHERE ID = ?";
         int res = 0;
 
         try
@@ -119,8 +120,8 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
             }
             preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setString(1, estado.getNombre());
-            preparedStatement.setInt(2, estado.getId());
+            preparedStatement.setString(1, artista.getArtista());
+            preparedStatement.setInt(2, artista.getId());
 
             res = preparedStatement.executeUpdate();
 
@@ -138,22 +139,21 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
     }
 
     @Override
-    public boolean delete(Estado estado)
+    public boolean delete(Artista artista)
     {
         PreparedStatement preparedStatement = null;
-        String query = "DELETE FROM tbl_estado WHERE ID = ?";
+        String query = "DELETE FROM tbl_artista WHERE ID = ?";
         int res = 0;
-        List<Municipio> list = MunicipioJdbcImpl.getInstance().findByEstadoId(estado.getId());
+        List<Disco> list = DiscoSqlImpl.getInstance().findByArtistaId(artista.getId());
 
         if(!list.isEmpty())
         {
-            System.out.println("\n> No se puede eliminar el estado porque tiene los siguientes municipios asociados: ");
-            for(Municipio municipio: list)
+            System.out.println("\n> No se puede eliminar el artista porque tiene los siguientes discos asociados: ");
+            for(Disco disco: list)
             {
-                System.out.println("- [ID: "+municipio.getId()+"], [NOMBRE: "+municipio.getNombre()+"]");
+                System.out.println("- [ID: "+disco.getId()+"], [TITULO: "+disco.getTituloDisco()+"]");
             }
-
-            System.out.print("> Desea eliminar también estos municipios? (S/N): ");
+            System.out.print("> Desea eliminar también estos discos? (S/N): ");
             String respuesta = ReadUtil.read();
 
             if(!respuesta.equalsIgnoreCase("S"))
@@ -162,12 +162,10 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
                 return false;
             }
 
-            for(Municipio municipio: list)
+            for(Disco disco: list)
             {
-                if(MunicipioJdbcImpl.getInstance().delete(municipio))
-                {
-                    System.out.println("> Municipios eliminados.");
-                }
+                DiscoSqlImpl.getInstance().delete(disco);
+                System.out.println("> Discos eliminados.");
             }
         }
 
@@ -179,7 +177,7 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
                 return false;
             }
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, estado.getId());
+            preparedStatement.setInt(1, artista.getId());
 
             res = preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -196,10 +194,10 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
     }
 
     @Override
-    public Estado findById(Integer id)
+    public Artista findById(Integer id)
     {
-        Estado estado = null;
-        String query = "SELECT * FROM tbl_estado WHERE ID = ?";
+        Artista artista = null;
+        String query = "SELECT * FROM tbl_artista WHERE ID = ?";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
@@ -216,9 +214,9 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
 
             if(resultSet.next())
             {
-                estado = new Estado();
-                estado.setId(resultSet.getInt( "ID" ));
-                estado.setNombre(resultSet.getString( "NOMBRE" ));
+                artista = new Artista();
+                artista.setId(resultSet.getInt( "ID" ));
+                artista.setArtista(resultSet.getString( "ARTISTA" ));
             }
 
             preparedStatement.close();
@@ -229,6 +227,6 @@ public class EstadoJdbcImpl extends Conexion implements GenericJdbc<Estado>
             e.printStackTrace();
             return null;
         }
-        return estado;
+        return artista;
     }
 }

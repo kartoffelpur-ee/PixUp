@@ -1,40 +1,40 @@
 package org.floresmateo.sql.jdbcimpl;
 
 import org.floresmateo.sql.Conexion;
-import org.floresmateo.sql.GenericJdbc;
-import org.floresmateo.model.Disco;
-import org.floresmateo.model.Genero_Musical;
+import org.floresmateo.sql.GenericSql;
+import org.floresmateo.model.Estado;
+import org.floresmateo.model.Municipio;
 import org.floresmateo.util.ReadUtil;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Genero_Musical>
+public class EstadoSqlImpl extends Conexion implements GenericSql<Estado>
 {
-    private static Genero_MusicalJdbcImpl generoMusicalJdbc;
+    private static EstadoSqlImpl estadoJdbc;
 
-    private Genero_MusicalJdbcImpl()
+    private EstadoSqlImpl()
     {
+        super();
     }
 
-    public static Genero_MusicalJdbcImpl getInstance()
+    public static EstadoSqlImpl getInstance()
     {
-        if(generoMusicalJdbc==null)
+        if(estadoJdbc==null)
         {
-            generoMusicalJdbc = new Genero_MusicalJdbcImpl();
+            estadoJdbc = new EstadoSqlImpl();
         }
-        return generoMusicalJdbc;
+        return estadoJdbc;
     }
-    
+
     @Override
-    public List<Genero_Musical> findAll()
+    public List<Estado> findAll()
     {
         Statement statement = null;
         ResultSet resultSet = null;
-        List<Genero_Musical> list = null;
-        Genero_Musical genero_Musical = null;
-        String sql ="SELECT * FROM tbl_genero_Musical";
+        List<Estado> list = null;
+        Estado estado = null;
+        String sql ="SELECT * FROM tbl_estado";
 
         try
         {
@@ -55,10 +55,10 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
 
             while( resultSet.next( ) )
             {
-                genero_Musical = new Genero_Musical();
-                genero_Musical.setId( resultSet.getInt( "ID" ) );
-                genero_Musical.setGenero( resultSet.getString( "GENERO" ) );
-                list.add( genero_Musical );
+                estado = new Estado();
+                estado.setId( resultSet.getInt( "ID" ) );
+                estado.setNombre( resultSet.getString( "NOMBRE" ) );
+                list.add( estado );
             }
 
             resultSet.close( );
@@ -73,10 +73,10 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
     }
 
     @Override
-    public boolean save(Genero_Musical genero_Musical)
+    public boolean save(Estado estado)
     {
         PreparedStatement preparedStatement = null;
-        String query = "INSERT INTO tbl_genero_Musical (GENERO) VALUES ( ? )";
+        String query = "INSERT INTO tbl_estado (NOMBRE) VALUES ( ? )";
         int res = 0;
 
         try
@@ -87,7 +87,7 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
                 return false;
             }
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, genero_Musical.getGenero());
+            preparedStatement.setString(1, estado.getNombre());
 
             res = preparedStatement.executeUpdate();
 
@@ -104,10 +104,10 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
     }
 
     @Override
-    public boolean update(Genero_Musical genero_Musical)
+    public boolean update(Estado estado)
     {
         PreparedStatement preparedStatement = null;
-        String query = "UPDATE tbl_genero_Musical SET GENERO = ? WHERE ID = ?";
+        String query = "UPDATE tbl_estado SET NOMBRE = ? WHERE ID = ?";
         int res = 0;
 
         try
@@ -119,8 +119,8 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
             }
             preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setString(1, genero_Musical.getGenero());
-            preparedStatement.setInt(2, genero_Musical.getId());
+            preparedStatement.setString(1, estado.getNombre());
+            preparedStatement.setInt(2, estado.getId());
 
             res = preparedStatement.executeUpdate();
 
@@ -138,22 +138,22 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
     }
 
     @Override
-    public boolean delete(Genero_Musical genero_Musical)
+    public boolean delete(Estado estado)
     {
         PreparedStatement preparedStatement = null;
-        String query = "DELETE FROM tbl_genero_Musical WHERE ID = ?";
+        String query = "DELETE FROM tbl_estado WHERE ID = ?";
         int res = 0;
-        List<Disco> list = DiscoJdbcImpl.getInstance().findByGenero_MusicalId(genero_Musical.getId());
+        List<Municipio> list = MunicipioSqlImpl.getInstance().findByEstadoId(estado.getId());
 
         if(!list.isEmpty())
         {
-            System.out.println("\n> No se puede eliminar el genero porque tiene los siguientes discos asociados: ");
-            for(Disco disco: list)
+            System.out.println("\n> No se puede eliminar el estado porque tiene los siguientes municipios asociados: ");
+            for(Municipio municipio: list)
             {
-                System.out.println("- [ID: "+disco.getId()+"], [TITULO: "+disco.getTituloDisco()+"]");
+                System.out.println("- [ID: "+municipio.getId()+"], [NOMBRE: "+municipio.getNombre()+"]");
             }
 
-            System.out.print("> Desea eliminar también estos discos? (S/N): ");
+            System.out.print("> Desea eliminar también estos municipios? (S/N): ");
             String respuesta = ReadUtil.read();
 
             if(!respuesta.equalsIgnoreCase("S"))
@@ -162,10 +162,12 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
                 return false;
             }
 
-            for(Disco disco: list)
+            for(Municipio municipio: list)
             {
-                DiscoJdbcImpl.getInstance().delete(disco);
-                System.out.println("> Discos eliminados.");
+                if(MunicipioSqlImpl.getInstance().delete(municipio))
+                {
+                    System.out.println("> Municipios eliminados.");
+                }
             }
         }
 
@@ -177,7 +179,7 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
                 return false;
             }
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, genero_Musical.getId());
+            preparedStatement.setInt(1, estado.getId());
 
             res = preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -194,10 +196,10 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
     }
 
     @Override
-    public Genero_Musical findById(Integer id)
+    public Estado findById(Integer id)
     {
-        Genero_Musical genero_Musical = null;
-        String query = "SELECT * FROM tbl_genero_Musical WHERE ID = ?";
+        Estado estado = null;
+        String query = "SELECT * FROM tbl_estado WHERE ID = ?";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
@@ -214,9 +216,9 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
 
             if(resultSet.next())
             {
-                genero_Musical = new Genero_Musical();
-                genero_Musical.setId(resultSet.getInt( "ID" ));
-                genero_Musical.setGenero(resultSet.getString( "GENERO" ));
+                estado = new Estado();
+                estado.setId(resultSet.getInt( "ID" ));
+                estado.setNombre(resultSet.getString( "NOMBRE" ));
             }
 
             preparedStatement.close();
@@ -227,6 +229,6 @@ public class Genero_MusicalJdbcImpl extends Conexion implements GenericJdbc<Gene
             e.printStackTrace();
             return null;
         }
-        return genero_Musical;
+        return estado;
     }
 }

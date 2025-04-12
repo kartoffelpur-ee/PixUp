@@ -1,7 +1,7 @@
 package org.floresmateo.vista.consola.usuario;
-import org.floresmateo.sql.GenericJdbc;
-import org.floresmateo.sql.jdbcimpl.EstadoJdbcImpl;
-import org.floresmateo.sql.jdbcimpl.MunicipioJdbcImpl;
+import org.floresmateo.sql.GenericSql;
+import org.floresmateo.sql.jdbcimpl.EstadoSqlImpl;
+import org.floresmateo.sql.jdbcimpl.MunicipioSqlImpl;
 import org.floresmateo.model.Estado;
 import org.floresmateo.model.Municipio;
 import org.floresmateo.util.ReadUtil;
@@ -12,7 +12,7 @@ import java.util.List;
 public class MunicipioCatalogo extends GestorCatalogos<Municipio>
 {
     private static MunicipioCatalogo municipioCatalogo;
-    private static final GenericJdbc<Municipio> municipioJdbc = MunicipioJdbcImpl.getInstance();
+    private static final GenericSql<Municipio> municipioJdbc = MunicipioSqlImpl.getInstance();
 
     public static MunicipioCatalogo getInstance( )
     {
@@ -25,7 +25,7 @@ public class MunicipioCatalogo extends GestorCatalogos<Municipio>
 
     private MunicipioCatalogo( )
     {
-        super(MunicipioJdbcImpl.getInstance());
+        super(MunicipioSqlImpl.getInstance());
     }
 
     @Override
@@ -40,12 +40,12 @@ public class MunicipioCatalogo extends GestorCatalogos<Municipio>
         System.out.print("> Teclee el nombre del municipio: ");
         municipio.setNombre( ReadUtil.read() );
 
-        EstadoJdbcImpl estadoJdbc = EstadoJdbcImpl.getInstance();
+        EstadoSqlImpl estadoJdbc = EstadoSqlImpl.getInstance();
         List<Estado> list = estadoJdbc.findAll();
         list.stream().forEach(System.out::println);
         System.out.print("> Teclee el ID del estado al que pertenece: ");
 
-        Estado estado = EstadoJdbcImpl.getInstance().findById(ReadUtil.readInt());
+        Estado estado = EstadoSqlImpl.getInstance().findById(ReadUtil.readInt());
         if(estado==null)
         {
             return false;

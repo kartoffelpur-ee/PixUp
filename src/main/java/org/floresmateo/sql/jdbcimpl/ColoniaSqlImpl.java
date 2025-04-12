@@ -1,7 +1,7 @@
 package org.floresmateo.sql.jdbcimpl;
 
 import org.floresmateo.sql.Conexion;
-import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.Colonia;
 import org.floresmateo.model.Estado;
 import org.floresmateo.model.Municipio;
@@ -9,20 +9,20 @@ import org.floresmateo.model.Municipio;
 import java.sql.*;
 import java.util.*;
 
-public class ColoniaJdbcImpl extends Conexion implements GenericJdbc<Colonia>
+public class ColoniaSqlImpl extends Conexion implements GenericSql<Colonia>
 {
-    private static ColoniaJdbcImpl coloniaJdbc;
+    private static ColoniaSqlImpl coloniaJdbc;
 
-    private ColoniaJdbcImpl()
+    private ColoniaSqlImpl()
     {
         super();
     }
 
-    public static ColoniaJdbcImpl getInstance()
+    public static ColoniaSqlImpl getInstance()
     {
         if(coloniaJdbc==null)
         {
-            coloniaJdbc = new ColoniaJdbcImpl();
+            coloniaJdbc = new ColoniaSqlImpl();
         }
         return coloniaJdbc;
     }

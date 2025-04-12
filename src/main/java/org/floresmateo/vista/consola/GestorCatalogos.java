@@ -1,6 +1,6 @@
 package org.floresmateo.vista.consola;
 import org.floresmateo.sql.Conexion;
-import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.Catalogo;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.LeerAcciones;
@@ -14,11 +14,11 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
     protected List<T> list;
     protected T t;
     protected boolean flag2;
-    protected GenericJdbc<T> genericJdbc;
+    protected GenericSql<T> genericSql;
 
-    public GestorCatalogos(GenericJdbc<T> genericJdbc)
+    public GestorCatalogos(GenericSql<T> genericSql)
     {
-        this.genericJdbc = genericJdbc;
+        this.genericSql = genericSql;
         Conexion conexion = new Conexion() {};
         Connection connection = conexion.getConnection();
     }
@@ -29,7 +29,7 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
 
     public void print()
     {
-        List<T> list = genericJdbc.findAll();
+        List<T> list = genericSql.findAll();
         if(list.isEmpty())
         {
             System.out.println("> No hay elementos registrados.");
@@ -48,7 +48,7 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
 
     public void remove( )
     {
-        List<T> list = genericJdbc.findAll();
+        List<T> list = genericSql.findAll();
         if( list.isEmpty( ) )
         {
             System.out.println( ">  No hay elementos para eliminar." );
@@ -66,7 +66,7 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
             }
             else
             {
-                if(genericJdbc.delete(t))
+                if(genericSql.delete(t))
                 {
                     System.out.println( "> Elemento eliminado con éxito." );
                 }
@@ -78,7 +78,7 @@ public abstract class GestorCatalogos<T extends Catalogo> extends LeerAcciones
     public void findById()
     {
         System.out.print("> Ingresa un ID para buscar: ");
-        t = genericJdbc.findById( ReadUtil.readInt() );
+        t = genericSql.findById( ReadUtil.readInt() );
 
         if(t!=null)
         {

@@ -1,6 +1,6 @@
 package org.floresmateo.sql.jdbcimpl;
 
-import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.Estado;
 import org.junit.jupiter.api.Test;
 
@@ -14,14 +14,14 @@ class EstadoJdbcImplTest
     @Test
     void getInstance()
     {
-        assertNotNull(EstadoJdbcImpl.getInstance());
-        //assertNull(EstadoJdbcImpl.getInstance());
+        assertNotNull(EstadoSqlImpl.getInstance());
+        //assertNull(EstadoSqlImpl.getInstance());
     }
 
     @Test
     void findAll()
     {
-        GenericJdbc<Estado> estadoJdbc= EstadoJdbcImpl.getInstance();
+        GenericSql<Estado> estadoJdbc= EstadoSqlImpl.getInstance();
         List<Estado> list = estadoJdbc.findAll();
         assertNotNull( list );
         assertFalse(list.isEmpty());
@@ -31,7 +31,7 @@ class EstadoJdbcImplTest
     @Test
     void save()
     {
-        GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
+        GenericSql<Estado> estadoJdbc = EstadoSqlImpl.getInstance();
         Estado estado = new Estado();
         estado.setNombre("CDMX");
         assertTrue(estadoJdbc.save(estado));
@@ -40,7 +40,7 @@ class EstadoJdbcImplTest
     @Test
     void update()
     {
-        GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
+        GenericSql<Estado> estadoJdbc = EstadoSqlImpl.getInstance();
         Estado estado = new Estado();
         estado.setNombre("Ciudad de mejico");
         estado.setId(1);
@@ -50,7 +50,7 @@ class EstadoJdbcImplTest
     @Test
     void delete()
     {
-        GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
+        GenericSql<Estado> estadoJdbc = EstadoSqlImpl.getInstance();
         Estado estado = new Estado();
         estado.setId(1);
         assertTrue(estadoJdbc.delete(estado));
@@ -59,7 +59,7 @@ class EstadoJdbcImplTest
     @Test
     void findById()
     {
-        GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
+        GenericSql<Estado> estadoJdbc = EstadoSqlImpl.getInstance();
 
         Estado estado = estadoJdbc.findById(4);
 

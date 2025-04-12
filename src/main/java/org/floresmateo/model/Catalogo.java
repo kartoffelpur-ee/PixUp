@@ -1,30 +1,21 @@
 package org.floresmateo.model;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@MappedSuperclass
 
 public abstract class Catalogo implements Serializable
 {
+    @Id
+    @Column (name = "ID")
+    @GeneratedValue (strategy = GenerationType.IDENTITY )
     protected Integer id;
-
-    public Catalogo()
-    {
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Catalogo{" +
-                "id=" + id +
-                '}';
-    }
 }
 

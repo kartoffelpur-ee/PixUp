@@ -1,47 +1,24 @@
 package org.floresmateo.model;
+
+import jakarta.persistence.*;
+import lombok.*;
 import java.io.Serializable;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@Entity
+@Table( name="TBL_MUNICIPIO" )
 
 public class Municipio extends Catalogo implements Serializable
 {
+    @Column( name = "MUNICIPIO", nullable = false )
     private String nombre;
+
+    @ManyToOne
+    @JoinColumn( name = "TBL_ESTADO_ID" )
     private Estado estado;
-
-    public Municipio()
-    {
-    }
-
-    public Municipio(String nombre, Estado estado)
-    {
-        this.nombre = nombre;
-        this.estado = estado;
-    }
-
-    public String getNombre()
-    {
-        return nombre;
-    }
-
-    public void setNombre(String nombre)
-    {
-        this.nombre = nombre;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Municipio {"+
-                "nombre='" + nombre + '\'' +
-                ", id=" + id +
-                ", estado="+estado.getNombre()+
-                "}";
-    }
 }
 

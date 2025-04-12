@@ -1,6 +1,6 @@
 package org.floresmateo.sql.jdbcimpl;
 
-import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.Estado;
 import org.floresmateo.model.Municipio;
 import org.junit.jupiter.api.Test;
@@ -14,14 +14,14 @@ class MunicipioJdbcImplTest {
     @Test
     void getInstance()
     {
-        assertNotNull(MunicipioJdbcImpl.getInstance());
-        //assertNull(EstadoJdbcImpl.getInstance());
+        assertNotNull(MunicipioSqlImpl.getInstance());
+        //assertNull(EstadoSqlImpl.getInstance());
     }
 
     @Test
     void findAll()
     {
-        GenericJdbc<Municipio> municipioJdbc = MunicipioJdbcImpl.getInstance();
+        GenericSql<Municipio> municipioJdbc = MunicipioSqlImpl.getInstance();
         List<Municipio> list = municipioJdbc.findAll();
         assertNotNull( list );
         assertFalse(list.isEmpty());
@@ -31,7 +31,7 @@ class MunicipioJdbcImplTest {
     @Test
     void save()
     {
-        GenericJdbc<Municipio> municipioJdbc = MunicipioJdbcImpl.getInstance();
+        GenericSql<Municipio> municipioJdbc = MunicipioSqlImpl.getInstance();
         Municipio municipio = new Municipio();
         municipio.setNombre("Reynosa");
 
@@ -44,7 +44,7 @@ class MunicipioJdbcImplTest {
     @Test
     void update()
     {
-        GenericJdbc<Municipio> municipioJdbc = MunicipioJdbcImpl.getInstance();
+        GenericSql<Municipio> municipioJdbc = MunicipioSqlImpl.getInstance();
         Municipio municipio = new Municipio();
         municipio.setNombre("Reinosa");
         municipio.setId(5);
@@ -54,7 +54,7 @@ class MunicipioJdbcImplTest {
     @Test
     void delete()
     {
-        GenericJdbc<Municipio> municipioJdbc = MunicipioJdbcImpl.getInstance();
+        GenericSql<Municipio> municipioJdbc = MunicipioSqlImpl.getInstance();
         Municipio municipio = new Municipio();
         municipio.setId(5);
         assertTrue(municipioJdbc.delete(municipio));
@@ -63,9 +63,9 @@ class MunicipioJdbcImplTest {
     @Test
     void findById()
     {
-        GenericJdbc<Municipio> municipioGenericJdbc = MunicipioJdbcImpl.getInstance();
+        GenericSql<Municipio> municipioGenericSql = MunicipioSqlImpl.getInstance();
 
-        Municipio municipio = municipioGenericJdbc.findById(4);
+        Municipio municipio = municipioGenericSql.findById(4);
 
         assertNotNull(municipio);
         assertEquals(4, municipio.getId());

@@ -1,6 +1,6 @@
 package org.floresmateo.vista.consola.usuario;
-import org.floresmateo.sql.GenericJdbc;
-import org.floresmateo.sql.jdbcimpl.EstadoJdbcImpl;
+import org.floresmateo.sql.GenericSql;
+import org.floresmateo.sql.jdbcimpl.EstadoSqlImpl;
 import org.floresmateo.model.Estado;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
@@ -10,7 +10,7 @@ import java.util.List;
 public class EstadoCatalogo extends GestorCatalogos<Estado>
 {
     private static EstadoCatalogo estadoCatalogo;
-    private static final GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
+    private static final GenericSql<Estado> estadoJdbc = EstadoSqlImpl.getInstance();
 
     public static EstadoCatalogo getInstance( )
     {
@@ -23,7 +23,7 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
 
     private EstadoCatalogo( )
     {
-        super(EstadoJdbcImpl.getInstance());
+        super(EstadoSqlImpl.getInstance());
     }
 
     @Override

@@ -1,6 +1,6 @@
 package org.floresmateo.vista.consola.disco;
-import org.floresmateo.sql.GenericJdbc;
-import org.floresmateo.sql.jdbcimpl.DisqueraJdbcImpl;
+import org.floresmateo.sql.GenericSql;
+import org.floresmateo.sql.jdbcimpl.DisqueraSqlImpl;
 import org.floresmateo.model.Disquera;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
@@ -10,11 +10,11 @@ import java.util.List;
 public class DisqueraCatalogo extends GestorCatalogos<Disquera>
 {
     private static DisqueraCatalogo disqueraCatalogo;
-    private static final GenericJdbc<Disquera> disqueraJdbc = DisqueraJdbcImpl.getInstance();
+    private static final GenericSql<Disquera> disqueraJdbc = DisqueraSqlImpl.getInstance();
 
     private DisqueraCatalogo()
     {
-        super(DisqueraJdbcImpl.getInstance());
+        super(DisqueraSqlImpl.getInstance());
     }
 
     public static DisqueraCatalogo getInstance()

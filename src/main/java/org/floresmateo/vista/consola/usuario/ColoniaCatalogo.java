@@ -1,8 +1,8 @@
 package org.floresmateo.vista.consola.usuario;
 
-import org.floresmateo.sql.GenericJdbc;
-import org.floresmateo.sql.jdbcimpl.ColoniaJdbcImpl;
-import org.floresmateo.sql.jdbcimpl.MunicipioJdbcImpl;
+import org.floresmateo.sql.GenericSql;
+import org.floresmateo.sql.jdbcimpl.ColoniaSqlImpl;
+import org.floresmateo.sql.jdbcimpl.MunicipioSqlImpl;
 import org.floresmateo.model.Colonia;
 import org.floresmateo.model.Municipio;
 import org.floresmateo.util.ReadUtil;
@@ -13,7 +13,7 @@ import java.util.List;
 public class ColoniaCatalogo extends GestorCatalogos<Colonia>
 {
     private static ColoniaCatalogo coloniaCatalogo;
-    private static final GenericJdbc<Colonia> coloniaJdbc = ColoniaJdbcImpl.getInstance();
+    private static final GenericSql<Colonia> coloniaJdbc = ColoniaSqlImpl.getInstance();
 
     public static ColoniaCatalogo getInstance( )
     {
@@ -26,7 +26,7 @@ public class ColoniaCatalogo extends GestorCatalogos<Colonia>
 
     private ColoniaCatalogo( )
     {
-        super(ColoniaJdbcImpl.getInstance());
+        super(ColoniaSqlImpl.getInstance());
     }
 
     @Override
@@ -43,11 +43,11 @@ public class ColoniaCatalogo extends GestorCatalogos<Colonia>
         System.out.print("> Teclee el código postal de la colonia: ");
         colonia.setCp( ReadUtil.read() );
 
-        MunicipioJdbcImpl municipioJdbc = MunicipioJdbcImpl.getInstance();
+        MunicipioSqlImpl municipioJdbc = MunicipioSqlImpl.getInstance();
         List<Municipio> list = municipioJdbc.findAll();
         list.stream().forEach(System.out::println);
         System.out.print("> Teclee el ID del municipio al que pertenece: ");
-        Municipio municipio = MunicipioJdbcImpl.getInstance().findById(ReadUtil.readInt());
+        Municipio municipio = MunicipioSqlImpl.getInstance().findById(ReadUtil.readInt());
         if(municipio==null)
         {
             return false;

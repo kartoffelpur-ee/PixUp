@@ -1,7 +1,7 @@
 package org.floresmateo.sql.jdbcimpl;
 
 import org.floresmateo.sql.Conexion;
-import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.Disco;
 import org.floresmateo.model.Disquera;
 import org.floresmateo.util.ReadUtil;
@@ -10,19 +10,19 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisqueraJdbcImpl extends Conexion implements GenericJdbc<Disquera>
+public class DisqueraSqlImpl extends Conexion implements GenericSql<Disquera>
 {
-    private static DisqueraJdbcImpl disqueraJdbc;
+    private static DisqueraSqlImpl disqueraJdbc;
 
-    private DisqueraJdbcImpl()
+    private DisqueraSqlImpl()
     {
     }
 
-    public static DisqueraJdbcImpl getInstance()
+    public static DisqueraSqlImpl getInstance()
     {
         if(disqueraJdbc==null)
         {
-            disqueraJdbc = new DisqueraJdbcImpl();
+            disqueraJdbc = new DisqueraSqlImpl();
         }
         return disqueraJdbc;
     }
@@ -143,7 +143,7 @@ public class DisqueraJdbcImpl extends Conexion implements GenericJdbc<Disquera>
         PreparedStatement preparedStatement = null;
         String query = "DELETE FROM tbl_disquera WHERE ID = ?";
         int res = 0;
-        List<Disco> list = DiscoJdbcImpl.getInstance().findByDisqueraId(disquera.getId());
+        List<Disco> list = DiscoSqlImpl.getInstance().findByDisqueraId(disquera.getId());
 
         if(!list.isEmpty())
         {
@@ -164,7 +164,7 @@ public class DisqueraJdbcImpl extends Conexion implements GenericJdbc<Disquera>
 
             for(Disco disco: list)
             {
-                DiscoJdbcImpl.getInstance().delete(disco);
+                DiscoSqlImpl.getInstance().delete(disco);
                 System.out.println("> Discos eliminados.");
             }
         }

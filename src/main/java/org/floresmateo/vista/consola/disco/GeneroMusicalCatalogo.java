@@ -1,6 +1,6 @@
 package org.floresmateo.vista.consola.disco;
-import org.floresmateo.sql.GenericJdbc;
-import org.floresmateo.sql.jdbcimpl.Genero_MusicalJdbcImpl;
+import org.floresmateo.sql.GenericSql;
+import org.floresmateo.sql.jdbcimpl.Genero_MusicalSqlImpl;
 import org.floresmateo.model.Genero_Musical;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
@@ -10,11 +10,11 @@ import java.util.List;
 public class GeneroMusicalCatalogo extends GestorCatalogos<Genero_Musical>
 {
     private static GeneroMusicalCatalogo generoMusicalCatalogo;
-    private static final GenericJdbc<Genero_Musical> genero_musicalJdbc = Genero_MusicalJdbcImpl.getInstance();
+    private static final GenericSql<Genero_Musical> genero_musicalJdbc = Genero_MusicalSqlImpl.getInstance();
 
     private GeneroMusicalCatalogo()
     {
-        super(Genero_MusicalJdbcImpl.getInstance());
+        super(Genero_MusicalSqlImpl.getInstance());
     }
 
     public static GeneroMusicalCatalogo getInstance()

@@ -1,30 +1,29 @@
 package org.floresmateo.sql.jdbcimpl;
 
 import org.floresmateo.sql.Conexion;
-import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.Colonia;
 import org.floresmateo.model.Estado;
 import org.floresmateo.model.Municipio;
 import org.floresmateo.util.ReadUtil;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MunicipioJdbcImpl extends Conexion implements GenericJdbc<Municipio>
+public class MunicipioSqlImpl extends Conexion implements GenericSql<Municipio>
 {
-    private static MunicipioJdbcImpl municipioJdbc;
+    private static MunicipioSqlImpl municipioJdbc;
 
-    private MunicipioJdbcImpl()
+    private MunicipioSqlImpl()
     {
         super();
     }
 
-    public static MunicipioJdbcImpl getInstance()
+    public static MunicipioSqlImpl getInstance()
     {
         if(municipioJdbc==null)
         {
-            municipioJdbc = new MunicipioJdbcImpl();
+            municipioJdbc = new MunicipioSqlImpl();
         }
         return municipioJdbc;
     }
@@ -155,7 +154,7 @@ public class MunicipioJdbcImpl extends Conexion implements GenericJdbc<Municipio
         PreparedStatement preparedStatement = null;
         String query = "DELETE FROM tbl_municipio WHERE ID = ?";
         int res = 0;
-        List<Colonia> list = ColoniaJdbcImpl.getInstance().findByMunicipioId(municipio.getId());
+        List<Colonia> list = ColoniaSqlImpl.getInstance().findByMunicipioId(municipio.getId());
 
         if(!list.isEmpty())
         {
@@ -176,7 +175,7 @@ public class MunicipioJdbcImpl extends Conexion implements GenericJdbc<Municipio
 
             for(Colonia colonia: list)
             {
-                ColoniaJdbcImpl.getInstance().delete(colonia);
+                ColoniaSqlImpl.getInstance().delete(colonia);
                 System.out.println("> Colonias eliminadas.");
             }
         }

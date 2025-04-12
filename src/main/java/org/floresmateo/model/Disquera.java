@@ -1,35 +1,21 @@
 package org.floresmateo.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.*;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString
+@Entity
+@Table( name = "TBL_DISQUERA" )
+
 public class Disquera extends Catalogo
 {
+    @Column( name = "DISQUERA", nullable = false )
     private String disquera;
-
-    public Disquera()
-    {
-    }
-
-    public Disquera(String disquera)
-    {
-        this.disquera = disquera;
-    }
-
-    public String getDisquera()
-    {
-        return disquera;
-    }
-
-    public void setDisquera(String disquera)
-    {
-        this.disquera = disquera;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Disquera{" +
-                "disquera='" + disquera + '\'' +
-                ", id=" + id +
-                '}';
-    }
 }
 

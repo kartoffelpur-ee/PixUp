@@ -1,7 +1,7 @@
 package org.floresmateo.sql.jdbcimpl;
 
 import org.floresmateo.sql.Conexion;
-import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.*;
 
 import java.sql.*;
@@ -9,20 +9,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CancionJdbcImpl extends Conexion implements GenericJdbc<Cancion>
+public class CancionSqlImpl extends Conexion implements GenericSql<Cancion>
 {
-    private static CancionJdbcImpl cancionJdbc;
+    private static CancionSqlImpl cancionJdbc;
 
-    private CancionJdbcImpl()
+    private CancionSqlImpl()
     {
         super();
     }
 
-    public static CancionJdbcImpl getInstance()
+    public static CancionSqlImpl getInstance()
     {
         if(cancionJdbc==null)
         {
-            cancionJdbc = new CancionJdbcImpl();
+            cancionJdbc = new CancionSqlImpl();
         }
         return cancionJdbc;
     }

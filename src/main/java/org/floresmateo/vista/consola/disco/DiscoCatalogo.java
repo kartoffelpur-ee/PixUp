@@ -1,5 +1,5 @@
 package org.floresmateo.vista.consola.disco;
-import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.sql.jdbcimpl.*;
 import org.floresmateo.model.*;
 import org.floresmateo.util.ReadUtil;
@@ -10,11 +10,11 @@ import java.util.List;
 public class DiscoCatalogo extends GestorCatalogos<Disco>
 {
     private static DiscoCatalogo discoCatalogo;
-    private static final GenericJdbc<Disco> discoJdbc = DiscoJdbcImpl.getInstance();
+    private static final GenericSql<Disco> discoJdbc = DiscoSqlImpl.getInstance();
 
     private DiscoCatalogo()
     {
-        super(DiscoJdbcImpl.getInstance());
+        super(DiscoSqlImpl.getInstance());
     }
 
     public static DiscoCatalogo getInstance()
@@ -46,27 +46,27 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
         System.out.print("> Ingrese la imagen: ");
         disco.setImagen( ReadUtil.read() );
 
-        DisqueraJdbcImpl disqueraJdbc = DisqueraJdbcImpl.getInstance();
+        DisqueraSqlImpl disqueraJdbc = DisqueraSqlImpl.getInstance();
         List<Disquera> list = disqueraJdbc.findAll();
         list.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID de la disquera de su distribución: ");
-        Disquera disquera = DisqueraJdbcImpl.getInstance().findById( ReadUtil.readInt() );
+        Disquera disquera = DisqueraSqlImpl.getInstance().findById( ReadUtil.readInt() );
         if(disquera==null) { return false; }
         else { disco.setDisquera( disquera ); }
 
-        ArtistaJdbcImpl artistaJdbc = ArtistaJdbcImpl.getInstance();
+        ArtistaSqlImpl artistaJdbc = ArtistaSqlImpl.getInstance();
         List<Artista> list2 = artistaJdbc.findAll();
         list2.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID del artista al que pertenece: ");
-        Artista artista = ArtistaJdbcImpl.getInstance().findById( ReadUtil.readInt() );
+        Artista artista = ArtistaSqlImpl.getInstance().findById( ReadUtil.readInt() );
         if(artista==null) { return false; }
         else { disco.setArtista(artista); }
 
-        Genero_MusicalJdbcImpl generoMusicalJdbc = Genero_MusicalJdbcImpl.getInstance();
+        Genero_MusicalSqlImpl generoMusicalJdbc = Genero_MusicalSqlImpl.getInstance();
         List<Genero_Musical> list3 = generoMusicalJdbc.findAll();
         list3.stream().forEach(System.out::println);
         System.out.print("> Ingrese el ID del género musical al que pertenece: ");
-        Genero_Musical generoMusical = Genero_MusicalJdbcImpl.getInstance().findById( ReadUtil.readInt() );
+        Genero_Musical generoMusical = Genero_MusicalSqlImpl.getInstance().findById( ReadUtil.readInt() );
         if(generoMusical==null) { return false; }
         else { disco.setGeneroMusical( generoMusical ); }
 

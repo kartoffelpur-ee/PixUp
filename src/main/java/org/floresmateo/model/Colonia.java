@@ -1,58 +1,25 @@
 package org.floresmateo.model;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "TBL_COLONIA")
+
 public class Colonia extends Catalogo
 {
+    @Column(name="COLONIA", nullable = false)
     private String nombre;
+
+    @Column(name="CP", nullable = false)
     private String cp;
+
+    @ManyToOne
+    @JoinColumn(name = "TBL_MUNICIPIO_ID")
     private Municipio municipio;
-
-    public Colonia()
-    {
-    }
-
-    public Colonia(String nombre, String cp, Municipio municipio)
-    {
-        this.nombre = nombre;
-        this.cp = cp;
-        this.municipio = municipio;
-    }
-
-    public String getNombre()
-    {
-        return nombre;
-    }
-
-    public void setNombre(String nombre)
-    {
-        this.nombre = nombre;
-    }
-
-    public String getCp() {
-        return cp;
-    }
-
-    public void setCp(String cp) {
-        this.cp = cp;
-    }
-
-    public Municipio getMunicipio() {
-        return municipio;
-    }
-
-    public void setMunicipio(Municipio municipio) {
-        this.municipio = municipio;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Colonia{" +
-                "nombre='" + nombre + '\'' +
-                ", id=" + id +
-                ", cp=" + cp +
-                ", municipio=" + municipio.getNombre() +
-                ", estado=" + municipio.getEstado().getNombre() +
-                "}";
-    }
 }
-

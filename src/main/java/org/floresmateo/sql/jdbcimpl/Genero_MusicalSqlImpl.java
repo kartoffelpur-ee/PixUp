@@ -1,41 +1,40 @@
 package org.floresmateo.sql.jdbcimpl;
 
 import org.floresmateo.sql.Conexion;
-import org.floresmateo.sql.GenericJdbc;
-import org.floresmateo.model.Artista;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.Disco;
+import org.floresmateo.model.Genero_Musical;
 import org.floresmateo.util.ReadUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
+public class Genero_MusicalSqlImpl extends Conexion implements GenericSql<Genero_Musical>
 {
-    private static ArtistaJdbcImpl artistaJdbc;
+    private static Genero_MusicalSqlImpl generoMusicalJdbc;
 
-    private ArtistaJdbcImpl()
+    private Genero_MusicalSqlImpl()
     {
-        super();
     }
 
-    public static ArtistaJdbcImpl getInstance()
+    public static Genero_MusicalSqlImpl getInstance()
     {
-        if(artistaJdbc==null)
+        if(generoMusicalJdbc==null)
         {
-            artistaJdbc = new ArtistaJdbcImpl();
+            generoMusicalJdbc = new Genero_MusicalSqlImpl();
         }
-        return artistaJdbc;
+        return generoMusicalJdbc;
     }
-
+    
     @Override
-    public List<Artista> findAll()
+    public List<Genero_Musical> findAll()
     {
         Statement statement = null;
         ResultSet resultSet = null;
-        List<Artista> list = null;
-        Artista artista = null;
-        String sql ="SELECT * FROM tbl_artista";
+        List<Genero_Musical> list = null;
+        Genero_Musical genero_Musical = null;
+        String sql ="SELECT * FROM tbl_genero_Musical";
 
         try
         {
@@ -56,10 +55,10 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
 
             while( resultSet.next( ) )
             {
-                artista = new Artista();
-                artista.setId( resultSet.getInt( "ID" ) );
-                artista.setArtista( resultSet.getString( "ARTISTA" ) );
-                list.add( artista );
+                genero_Musical = new Genero_Musical();
+                genero_Musical.setId( resultSet.getInt( "ID" ) );
+                genero_Musical.setGenero( resultSet.getString( "GENERO" ) );
+                list.add( genero_Musical );
             }
 
             resultSet.close( );
@@ -74,10 +73,10 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
     }
 
     @Override
-    public boolean save(Artista artista)
+    public boolean save(Genero_Musical genero_Musical)
     {
         PreparedStatement preparedStatement = null;
-        String query = "INSERT INTO tbl_artista (ARTISTA) VALUES ( ? )";
+        String query = "INSERT INTO tbl_genero_Musical (GENERO) VALUES ( ? )";
         int res = 0;
 
         try
@@ -88,7 +87,7 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
                 return false;
             }
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, artista.getArtista());
+            preparedStatement.setString(1, genero_Musical.getGenero());
 
             res = preparedStatement.executeUpdate();
 
@@ -105,10 +104,10 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
     }
 
     @Override
-    public boolean update(Artista artista)
+    public boolean update(Genero_Musical genero_Musical)
     {
         PreparedStatement preparedStatement = null;
-        String query = "UPDATE tbl_artista SET ARTISTA = ? WHERE ID = ?";
+        String query = "UPDATE tbl_genero_Musical SET GENERO = ? WHERE ID = ?";
         int res = 0;
 
         try
@@ -120,8 +119,8 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
             }
             preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setString(1, artista.getArtista());
-            preparedStatement.setInt(2, artista.getId());
+            preparedStatement.setString(1, genero_Musical.getGenero());
+            preparedStatement.setInt(2, genero_Musical.getId());
 
             res = preparedStatement.executeUpdate();
 
@@ -139,20 +138,21 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
     }
 
     @Override
-    public boolean delete(Artista artista)
+    public boolean delete(Genero_Musical genero_Musical)
     {
         PreparedStatement preparedStatement = null;
-        String query = "DELETE FROM tbl_artista WHERE ID = ?";
+        String query = "DELETE FROM tbl_genero_Musical WHERE ID = ?";
         int res = 0;
-        List<Disco> list = DiscoJdbcImpl.getInstance().findByArtistaId(artista.getId());
+        List<Disco> list = DiscoSqlImpl.getInstance().findByGenero_MusicalId(genero_Musical.getId());
 
         if(!list.isEmpty())
         {
-            System.out.println("\n> No se puede eliminar el artista porque tiene los siguientes discos asociados: ");
+            System.out.println("\n> No se puede eliminar el genero porque tiene los siguientes discos asociados: ");
             for(Disco disco: list)
             {
                 System.out.println("- [ID: "+disco.getId()+"], [TITULO: "+disco.getTituloDisco()+"]");
             }
+
             System.out.print("> Desea eliminar también estos discos? (S/N): ");
             String respuesta = ReadUtil.read();
 
@@ -164,7 +164,7 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
 
             for(Disco disco: list)
             {
-                DiscoJdbcImpl.getInstance().delete(disco);
+                DiscoSqlImpl.getInstance().delete(disco);
                 System.out.println("> Discos eliminados.");
             }
         }
@@ -177,7 +177,7 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
                 return false;
             }
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, artista.getId());
+            preparedStatement.setInt(1, genero_Musical.getId());
 
             res = preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -194,10 +194,10 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
     }
 
     @Override
-    public Artista findById(Integer id)
+    public Genero_Musical findById(Integer id)
     {
-        Artista artista = null;
-        String query = "SELECT * FROM tbl_artista WHERE ID = ?";
+        Genero_Musical genero_Musical = null;
+        String query = "SELECT * FROM tbl_genero_Musical WHERE ID = ?";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
@@ -214,9 +214,9 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
 
             if(resultSet.next())
             {
-                artista = new Artista();
-                artista.setId(resultSet.getInt( "ID" ));
-                artista.setArtista(resultSet.getString( "ARTISTA" ));
+                genero_Musical = new Genero_Musical();
+                genero_Musical.setId(resultSet.getInt( "ID" ));
+                genero_Musical.setGenero(resultSet.getString( "GENERO" ));
             }
 
             preparedStatement.close();
@@ -227,6 +227,6 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
             e.printStackTrace();
             return null;
         }
-        return artista;
+        return genero_Musical;
     }
 }

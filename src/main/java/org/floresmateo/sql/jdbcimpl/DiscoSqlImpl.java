@@ -1,7 +1,7 @@
 package org.floresmateo.sql.jdbcimpl;
 
 import org.floresmateo.sql.Conexion;
-import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.*;
 import org.floresmateo.model.Disco;
 import org.floresmateo.util.ReadUtil;
@@ -11,20 +11,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscoJdbcImpl extends Conexion implements GenericJdbc<Disco>
+public class DiscoSqlImpl extends Conexion implements GenericSql<Disco>
 {
-    private static DiscoJdbcImpl discoJdbc;
+    private static DiscoSqlImpl discoJdbc;
 
-    private DiscoJdbcImpl()
+    private DiscoSqlImpl()
     {
         super();
     }
 
-    public static DiscoJdbcImpl getInstance()
+    public static DiscoSqlImpl getInstance()
     {
         if(discoJdbc==null)
         {
-            discoJdbc = new DiscoJdbcImpl();
+            discoJdbc = new DiscoSqlImpl();
         }
         return discoJdbc;
     }
@@ -181,7 +181,7 @@ public class DiscoJdbcImpl extends Conexion implements GenericJdbc<Disco>
         PreparedStatement preparedStatement = null;
         String query = "DELETE FROM tbl_disco WHERE ID = ?";
         int res = 0;
-        List<Cancion> list = CancionJdbcImpl.getInstance().findByDiscoId(disco.getId());
+        List<Cancion> list = CancionSqlImpl.getInstance().findByDiscoId(disco.getId());
 
         if(!list.isEmpty())
         {
@@ -202,7 +202,7 @@ public class DiscoJdbcImpl extends Conexion implements GenericJdbc<Disco>
 
             for(Cancion cancion: list)
             {
-                CancionJdbcImpl.getInstance().delete(cancion);
+                CancionSqlImpl.getInstance().delete(cancion);
                 System.out.println("> Canciones eliminadas.");
             }
         }

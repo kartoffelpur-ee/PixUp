@@ -1,6 +1,6 @@
 package org.floresmateo.sql.jdbcimpl;
 
-import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.GenericSql;
 import org.floresmateo.model.Colonia;
 import org.floresmateo.model.Municipio;
 import org.junit.jupiter.api.Test;
@@ -15,13 +15,13 @@ class ColoniaJdbcImplTest
     @Test
     void getInstance()
     {
-        assertNotNull(ColoniaJdbcImpl.getInstance());
+        assertNotNull(ColoniaSqlImpl.getInstance());
     }
 
     @Test
     void findAll()
     {
-        GenericJdbc<Colonia> coloniaJdbc = ColoniaJdbcImpl.getInstance();
+        GenericSql<Colonia> coloniaJdbc = ColoniaSqlImpl.getInstance();
         List<Colonia> list = coloniaJdbc.findAll();
         assertNotNull(list);
         assertFalse(list.isEmpty());
@@ -31,7 +31,7 @@ class ColoniaJdbcImplTest
     @Test
     void save()
     {
-        GenericJdbc<Colonia> coloniaJdbc = ColoniaJdbcImpl.getInstance();
+        GenericSql<Colonia> coloniaJdbc = ColoniaSqlImpl.getInstance();
         Colonia colonia = new Colonia();
         colonia.setNombre("Colonia 3");
         colonia.setCp("23124");
@@ -46,7 +46,7 @@ class ColoniaJdbcImplTest
     @Test
     void update()
     {
-        GenericJdbc<Colonia> coloniaJdbc = ColoniaJdbcImpl.getInstance();
+        GenericSql<Colonia> coloniaJdbc = ColoniaSqlImpl.getInstance();
         Colonia colonia = new Colonia();
         colonia.setNombre("Colonia3");
         colonia.setId(3);
@@ -57,7 +57,7 @@ class ColoniaJdbcImplTest
     @Test
     void delete()
     {
-        GenericJdbc<Colonia> coloniaJdbc = ColoniaJdbcImpl.getInstance();
+        GenericSql<Colonia> coloniaJdbc = ColoniaSqlImpl.getInstance();
         Colonia colonia = new Colonia();
         colonia.setId(1);
 
@@ -67,7 +67,7 @@ class ColoniaJdbcImplTest
     @Test
     void findById()
     {
-        GenericJdbc<Colonia> coloniaJdbc = ColoniaJdbcImpl.getInstance();
+        GenericSql<Colonia> coloniaJdbc = ColoniaSqlImpl.getInstance();
         Colonia colonia = coloniaJdbc.findById(2);
 
         assertNotNull(colonia);
