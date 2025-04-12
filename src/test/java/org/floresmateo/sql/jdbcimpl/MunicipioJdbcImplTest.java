@@ -1,6 +1,6 @@
-package org.floresmateo.jdbc.impl;
+package org.floresmateo.sql.jdbcimpl;
 
-import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.sql.GenericJdbc;
 import org.floresmateo.model.Estado;
 import org.floresmateo.model.Municipio;
 import org.junit.jupiter.api.Test;

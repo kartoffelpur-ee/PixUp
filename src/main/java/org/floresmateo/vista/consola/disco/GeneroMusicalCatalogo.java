@@ -1,7 +1,6 @@
 package org.floresmateo.vista.consola.disco;
-import org.floresmateo.jdbc.GenericJdbc;
-import org.floresmateo.jdbc.impl.Genero_MusicalJdbcImpl;
-import org.floresmateo.model.Estado;
+import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.jdbcimpl.Genero_MusicalJdbcImpl;
 import org.floresmateo.model.Genero_Musical;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;

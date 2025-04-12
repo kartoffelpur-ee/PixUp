@@ -1,13 +1,12 @@
 package org.floresmateo.vista.consola.usuario;
-import org.floresmateo.jdbc.GenericJdbc;
-import org.floresmateo.jdbc.impl.EstadoJdbcImpl;
-import org.floresmateo.jdbc.impl.MunicipioJdbcImpl;
+import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.jdbcimpl.EstadoJdbcImpl;
+import org.floresmateo.sql.jdbcimpl.MunicipioJdbcImpl;
 import org.floresmateo.model.Estado;
 import org.floresmateo.model.Municipio;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
 
-import java.io.File;
 import java.util.List;
 
 public class MunicipioCatalogo extends GestorCatalogos<Municipio>

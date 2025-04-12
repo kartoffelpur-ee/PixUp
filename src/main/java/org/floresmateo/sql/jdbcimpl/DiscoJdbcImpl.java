@@ -1,7 +1,7 @@
-package org.floresmateo.jdbc.impl;
+package org.floresmateo.sql.jdbcimpl;
 
-import org.floresmateo.jdbc.Conexion;
-import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.sql.Conexion;
+import org.floresmateo.sql.GenericJdbc;
 import org.floresmateo.model.*;
 import org.floresmateo.model.Disco;
 import org.floresmateo.util.ReadUtil;

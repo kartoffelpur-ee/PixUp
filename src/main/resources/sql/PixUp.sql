@@ -18,7 +18,6 @@ CREATE SCHEMA IF NOT EXISTS `pixup` DEFAULT CHARACTER SET utf8 ;
 SHOW WARNINGS;
 USE `pixup` ;
 
-select * from tbl_estado;
 -- -----------------------------------------------------
 -- Table `pixup`.`TBL_ESTADO`
 -- -----------------------------------------------------

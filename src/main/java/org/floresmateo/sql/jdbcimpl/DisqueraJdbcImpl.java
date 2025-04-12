@@ -1,41 +1,40 @@
-package org.floresmateo.jdbc.impl;
+package org.floresmateo.sql.jdbcimpl;
 
-import org.floresmateo.jdbc.Conexion;
-import org.floresmateo.jdbc.GenericJdbc;
-import org.floresmateo.model.Artista;
+import org.floresmateo.sql.Conexion;
+import org.floresmateo.sql.GenericJdbc;
 import org.floresmateo.model.Disco;
+import org.floresmateo.model.Disquera;
 import org.floresmateo.util.ReadUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
+public class DisqueraJdbcImpl extends Conexion implements GenericJdbc<Disquera>
 {
-    private static ArtistaJdbcImpl artistaJdbc;
+    private static DisqueraJdbcImpl disqueraJdbc;
 
-    private ArtistaJdbcImpl()
+    private DisqueraJdbcImpl()
     {
-        super();
     }
 
-    public static ArtistaJdbcImpl getInstance()
+    public static DisqueraJdbcImpl getInstance()
     {
-        if(artistaJdbc==null)
+        if(disqueraJdbc==null)
         {
-            artistaJdbc = new ArtistaJdbcImpl();
+            disqueraJdbc = new DisqueraJdbcImpl();
         }
-        return artistaJdbc;
+        return disqueraJdbc;
     }
 
     @Override
-    public List<Artista> findAll()
+    public List<Disquera> findAll()
     {
         Statement statement = null;
         ResultSet resultSet = null;
-        List<Artista> list = null;
-        Artista artista = null;
-        String sql ="SELECT * FROM tbl_artista";
+        List<Disquera> list = null;
+        Disquera disquera = null;
+        String sql ="SELECT * FROM tbl_disquera";
 
         try
         {
@@ -56,10 +55,10 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
 
             while( resultSet.next( ) )
             {
-                artista = new Artista();
-                artista.setId( resultSet.getInt( "ID" ) );
-                artista.setArtista( resultSet.getString( "ARTISTA" ) );
-                list.add( artista );
+                disquera = new Disquera();
+                disquera.setId( resultSet.getInt( "ID" ) );
+                disquera.setDisquera( resultSet.getString( "DISQUERA" ) );
+                list.add( disquera );
             }
 
             resultSet.close( );
@@ -74,10 +73,10 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
     }
 
     @Override
-    public boolean save(Artista artista)
+    public boolean save(Disquera disquera)
     {
         PreparedStatement preparedStatement = null;
-        String query = "INSERT INTO tbl_artista (ARTISTA) VALUES ( ? )";
+        String query = "INSERT INTO tbl_disquera (DISQUERA) VALUES ( ? )";
         int res = 0;
 
         try
@@ -88,7 +87,7 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
                 return false;
             }
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, artista.getArtista());
+            preparedStatement.setString(1, disquera.getDisquera());
 
             res = preparedStatement.executeUpdate();
 
@@ -105,10 +104,10 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
     }
 
     @Override
-    public boolean update(Artista artista)
+    public boolean update(Disquera disquera)
     {
         PreparedStatement preparedStatement = null;
-        String query = "UPDATE tbl_artista SET ARTISTA = ? WHERE ID = ?";
+        String query = "UPDATE tbl_disquera SET DISQUERA = ? WHERE ID = ?";
         int res = 0;
 
         try
@@ -120,8 +119,8 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
             }
             preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setString(1, artista.getArtista());
-            preparedStatement.setInt(2, artista.getId());
+            preparedStatement.setString(1, disquera.getDisquera());
+            preparedStatement.setInt(2, disquera.getId());
 
             res = preparedStatement.executeUpdate();
 
@@ -139,20 +138,21 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
     }
 
     @Override
-    public boolean delete(Artista artista)
+    public boolean delete(Disquera disquera)
     {
         PreparedStatement preparedStatement = null;
-        String query = "DELETE FROM tbl_artista WHERE ID = ?";
+        String query = "DELETE FROM tbl_disquera WHERE ID = ?";
         int res = 0;
-        List<Disco> list = DiscoJdbcImpl.getInstance().findByArtistaId(artista.getId());
+        List<Disco> list = DiscoJdbcImpl.getInstance().findByDisqueraId(disquera.getId());
 
         if(!list.isEmpty())
         {
-            System.out.println("\n> No se puede eliminar el artista porque tiene los siguientes discos asociados: ");
+            System.out.println("\n> No se puede eliminar la disquera porque tiene los siguientes discos asociados: ");
             for(Disco disco: list)
             {
                 System.out.println("- [ID: "+disco.getId()+"], [TITULO: "+disco.getTituloDisco()+"]");
             }
+
             System.out.print("> Desea eliminar también estos discos? (S/N): ");
             String respuesta = ReadUtil.read();
 
@@ -177,7 +177,7 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
                 return false;
             }
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, artista.getId());
+            preparedStatement.setInt(1, disquera.getId());
 
             res = preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -194,10 +194,10 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
     }
 
     @Override
-    public Artista findById(Integer id)
+    public Disquera findById(Integer id)
     {
-        Artista artista = null;
-        String query = "SELECT * FROM tbl_artista WHERE ID = ?";
+        Disquera disquera = null;
+        String query = "SELECT * FROM tbl_disquera WHERE ID = ?";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
@@ -214,9 +214,9 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
 
             if(resultSet.next())
             {
-                artista = new Artista();
-                artista.setId(resultSet.getInt( "ID" ));
-                artista.setArtista(resultSet.getString( "ARTISTA" ));
+                disquera = new Disquera();
+                disquera.setId(resultSet.getInt( "ID" ));
+                disquera.setDisquera(resultSet.getString( "DISQUERA" ));
             }
 
             preparedStatement.close();
@@ -227,6 +227,6 @@ public class ArtistaJdbcImpl extends Conexion implements GenericJdbc<Artista>
             e.printStackTrace();
             return null;
         }
-        return artista;
+        return disquera;
     }
 }

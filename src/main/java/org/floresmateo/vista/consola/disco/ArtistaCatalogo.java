@@ -1,12 +1,10 @@
 package org.floresmateo.vista.consola.disco;
-import org.floresmateo.jdbc.GenericJdbc;
-import org.floresmateo.jdbc.impl.ArtistaJdbcImpl;
-import org.floresmateo.jdbc.impl.EstadoJdbcImpl;
+import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.jdbcimpl.ArtistaJdbcImpl;
 import org.floresmateo.model.Artista;
-import org.floresmateo.model.Estado;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;
-import java.io.File;
+
 import java.util.List;
 
 public class ArtistaCatalogo extends GestorCatalogos<Artista>

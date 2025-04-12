@@ -1,4 +1,4 @@
-package org.floresmateo.jdbc;
+package org.floresmateo.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,6 +1,6 @@
 package org.floresmateo.vista.consola.disco;
-import org.floresmateo.jdbc.GenericJdbc;
-import org.floresmateo.jdbc.impl.*;
+import org.floresmateo.sql.GenericJdbc;
+import org.floresmateo.sql.jdbcimpl.*;
 import org.floresmateo.model.*;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.consola.GestorCatalogos;

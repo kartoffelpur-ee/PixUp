@@ -1,12 +1,11 @@
 package org.floresmateo.vista.consola;
-import org.floresmateo.jdbc.Conexion;
-import org.floresmateo.jdbc.GenericJdbc;
+import org.floresmateo.sql.Conexion;
+import org.floresmateo.sql.GenericJdbc;
 import org.floresmateo.model.Catalogo;
 import org.floresmateo.util.ReadUtil;
 import org.floresmateo.vista.LeerAcciones;
 import org.floresmateo.vista.Menu;
 
-import java.io.*;
 import java.sql.*;
 import java.util.List;
 
