@@ -32,7 +32,7 @@ class EstadoHiberImplTest {
     {
         GenericSql<Estado> estadoHiber = EstadoHiberImpl.getInstance();
 
-        for(int i = 1; i<4; i++ )
+        for(int i = 1; i<5; i++ )
         {
             Estado estado = new Estado();
             estado.setEstado(" Prueba ");
@@ -47,15 +47,33 @@ class EstadoHiberImplTest {
     @Test
     void update()
     {
+        GenericSql<Estado> estadoHiber = EstadoHiberImpl.getInstance();
+
+        Estado estado = new Estado();
+        estado.setId(1);
+        estado.setEstado( "NuevoPrueba" );
+
+        assertNotNull( estado );
+        estadoHiber.update( estado );
     }
 
     @Test
     void delete()
     {
+        GenericSql<Estado> estadoHiber = EstadoHiberImpl.getInstance();
+        Estado estado = estadoHiber.findById(4);
+
+        assertNotNull( estado );
+        estadoHiber.delete( estado );
     }
 
     @Test
     void findById()
     {
+        EstadoHiberImpl estadoHiber = EstadoHiberImpl.getInstance();
+        Estado estado = estadoHiber.findById(1);
+
+        assertNotNull( estado );
+        System.out.println(estado);
     }
 }
